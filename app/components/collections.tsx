@@ -1,0 +1,49 @@
+export default function Collections() {
+  let collections = [
+    "Readymade Suits",
+    "Anarkalis",
+    "Gowns",
+    "Lehangas",
+    "Menswear",
+    "Girls Kids Dresses",
+    "Boys Kids Dresses",
+    "Jewellery",
+    "Sarees",
+    "Blouses",
+    "Indo Western",
+  ];
+
+  return (
+    <div className="flex flex-col items-center">
+      <p className="mt-10 text-xl font-[Overpass]">Shop by Collections</p>
+      <div className="overflow-x-auto flex relative max-w-[95%] no-scrollbar m-4">
+        {collections.map((a) => {
+          return (
+            <div key={`${a}`} className="basis-1/2 lg:basis-1/4 shrink-0">
+              <div className="mx-1 basis-1/2 shrink-0 aspect-square overflow-hidden">
+                <img
+                  src={`/categories/${a.toLowerCase()}.jpg`}
+                  className="w-full h-full object-top object-cover"
+                ></img>
+              </div>
+              <p className="text-center mt-3 font-[Overpass] font-500">{`${a}`}</p>
+            </div>
+          );
+        })}
+      </div>
+      <div></div>
+    </div>
+  );
+}
+
+// readymade suits
+// anarkali
+// gowns
+// lehangas
+// menethnic wear
+// girls kids dreses
+// boys kids dresses
+// jewellery
+// sarees
+// blouses
+// indo western

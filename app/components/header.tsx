@@ -1,0 +1,38 @@
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { User, Heart, Search, Menu } from "lucide-react";
+
+export default function Header() {
+  return (
+    <header className="flex justify-between items-center p-4 gap-4 h-16">
+      <div className="w-1/4">
+        <Menu className="flex justify-start"></Menu>
+      </div>
+      <a href="/">
+        <p className="font-[Overpass] font-bold text-lg">LIS BOUTIQUE</p>
+      </a>
+      <div className="flex w-1/4 justify-end gap-3">
+        <Search></Search>
+        <SignedOut>
+          <SignInButton>
+            <User />
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        <Heart></Heart>
+      </div>
+    </header>
+  );
+}
+
+// readymade suits
+// anarkali
+// gowns
+// lehangas
+// menethnic wear
+// girls kids dreses
+// boys kids dresses
+// jewellery 
+// sarees 
+// blouses 
