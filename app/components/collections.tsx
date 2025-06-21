@@ -1,17 +1,8 @@
-export default function Collections() {
-  let collections = [
-    "Readymade Suits",
-    "Anarkalis",
-    "Gowns",
-    "Lehangas",
-    "Menswear",
-    "Girls Kids Dresses",
-    "Boys Kids Dresses",
-    "Jewellery",
-    "Sarees",
-    "Blouses",
-    "Indo Western",
-  ];
+type propsType = {
+  collections: string[]
+}
+
+export default function Collections(props: propsType) {
 
   return (
     <div className="flex flex-col items-center">
@@ -22,7 +13,7 @@ export default function Collections() {
             <p className="h-full w-full flex items-center justify-center text-white font-[Overpass]">SHOP ALL</p>
           </div>
         </a>
-        {collections.map((a) => {
+        {props.collections.map((a) => {
           return (
             <a key={`${a}`} className="basis-1/2 lg:basis-1/4 shrink-0" href={`/search?col=${a}`}>
               <div className="mx-1 basis-1/2 shrink-0 aspect-square overflow-hidden">

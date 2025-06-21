@@ -1,11 +1,20 @@
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { User, Heart, Search, Menu } from "lucide-react";
+'use client'
 
-export default function Header() {
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { User, Heart, Search } from "lucide-react";
+import AppSidebar from "./sidebar";
+
+type propsType = {
+  collections: string[]
+}
+
+export default function Header(props: propsType) {
+
   return (
     <header className="flex justify-between items-center p-4 gap-4 h-16">
       <div className="w-1/4">
-        <Menu className="flex justify-start"></Menu>
+        <AppSidebar {...props}></AppSidebar>
+        
       </div>
       <a href="/">
         <p className="font-[Overpass] font-bold text-lg">LIS BOUTIQUE</p>
