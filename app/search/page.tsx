@@ -1,6 +1,7 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import MainSearch from "../components/mainSearch";
+import { Suspense } from "react";
 
 export default function Search() {
   let collections = [
@@ -20,7 +21,9 @@ export default function Search() {
   return (
     <div className="flex flex-col max-w-screen">
       <Header collections={collections}></Header>
-      <MainSearch />
+      <Suspense>
+        <MainSearch />
+      </Suspense>
       <Footer></Footer>
     </div>
   );

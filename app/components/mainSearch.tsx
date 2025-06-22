@@ -5,8 +5,6 @@ import getProducts from "../data/getProducts";
 import { useEffect, useState } from "react";
 import { SelectDemo } from "./sortByCombobox";
 import { productType } from "../data/getProducts";
-import currency from "currency.js";
-import { Heart } from "lucide-react";
 import ProductCard from "./productCard";
 
 type ProductsType = [productType[], Number];
