@@ -1,16 +1,17 @@
 import { Instagram, Facebook, Mail, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
     <div className="bg-black w-screen h-[300px] flex flex-col justify-start items-start">
       <p className="text-white text-lg font-[Overpass] ml-10 mt-5 font-semibold">Contact Us</p>
       <div className="flex gap-5 ml-10 mt-7">
-        <a href="https://www.instagram.com/lisboutiquepriti/">
+        <Link href="https://www.instagram.com/lisboutiquepriti/">
           <Instagram color="white" className=""></Instagram>
-        </a>
-        <a href="https://www.facebook.com/share/15rbF1B7yn/">
+        </Link>
+        <Link href="https://www.facebook.com/share/15rbF1B7yn/">
           <Facebook color="white" className=""></Facebook>
-        </a>
+        </Link>
       </div>
       <div className="ml-10 mt-8 flex flex-col gap-5">
         <div className="flex gap-3">
