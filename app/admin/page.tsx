@@ -37,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import webpfy from "webpfy";
 
 let collections = [
   "Readymade Suits",
@@ -133,17 +134,24 @@ export default function AppSidebar() {
   }, [price, sizes, form]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     setLoadState("loading");
     values.id = uuidv4();
     let urls = await Promise.all(
       values.media.map(async (file) => {
-        const newBlob = await upload(file.name, file, {
-          access: "public",
-          handleUploadUrl: "/api/createToken",
-        });
-        return newBlob.url;
+        if (!file.type.startsWith("video/")) {
+          const { webpBlob, fileName } = await webpfy({ image: file });
+          const newBlob = await upload(fileName, webpBlob, {
+            access: "public",
+            handleUploadUrl: "/api/createToken",
+          });
+          return newBlob.url;
+        } else {
+          const newBlob = await upload(file.name, file, {
+            access: "public",
+            handleUploadUrl: "/api/createToken",
+          });
+          return newBlob.url;
+        }
       })
     );
 
@@ -156,8 +164,8 @@ export default function AppSidebar() {
       media: urls,
       description: values.description,
       price: values.price,
-      customPrice: values.price,
-      unstitchPrice: values.price,
+      customPrice: values.customPrice,
+      unstitchPrice: values.unstitchPrice,
     } as Omit<Omit<dataProductType, "id">, "createdAt">;
 
     let result = await addProduct(newProduct);
@@ -261,7 +269,11 @@ export default function AppSidebar() {
                             <SelectGroup>
                               <SelectLabel>Type</SelectLabel>
                               {collectionWithOther.map((c) => {
-                                return <SelectItem key={c} value={c}>{c}</SelectItem>;
+                                return (
+                                  <SelectItem key={c} value={c}>
+                                    {c}
+                                  </SelectItem>
+                                );
                               })}
                             </SelectGroup>
                           </SelectContent>
@@ -430,12 +442,12 @@ export default function AppSidebar() {
 
                 {mediaFiles.length > 0 && (
                   <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId="droppable">
+                    <Droppable droppableId="droppable" direction="horizontal">
                       {(provided, snapshot) => (
                         <div
                           {...provided.droppableProps}
                           ref={provided.innerRef}
-                          className="flex flex-col gap-3 max-h-[80vh] overflow-auto"
+                          className="flex max-h-[80vh] overflow-x-auto relative max-w-[95%]"
                         >
                           {mediaFiles.map((item, i) => (
                             <Draggable
@@ -448,7 +460,7 @@ export default function AppSidebar() {
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  className="cursor-grab active:cursor-grabbing"
+                                  className="cursor-grab p-1 basis-[40%] shrink-0 py-5 border-2 border-black active:cursor-grabbing"
                                 >
                                   {item.file.type.startsWith("video/") ? (
                                     <div className="relative w-fit">
