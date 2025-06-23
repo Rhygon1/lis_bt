@@ -158,7 +158,7 @@ export default function AppSidebar() {
       price: values.price,
       customPrice: values.price,
       unstitchPrice: values.price,
-    } as Omit<dataProductType, "id">;
+    } as Omit<Omit<dataProductType, "id">, "createdAt">;
 
     let result = await addProduct(newProduct);
 

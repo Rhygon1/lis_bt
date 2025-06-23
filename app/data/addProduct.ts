@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function addProduct(
-  product: Omit<dataProductType, "id">
+  product: Omit<Omit<dataProductType, "id">, "createdAt">
 ): Promise<{ success: boolean; id?: string; error?: string }> {
   try {
     const id = uuidv4();
@@ -25,7 +25,8 @@ export async function addProduct(
         description TEXT NOT NULL,
         price INTEGER NOT NULL,
         custom_price INTEGER NOT NULL,
-        unstitch_price INTEGER NOT NULL
+        unstitch_price INTEGER NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW()
       )
     `;
 

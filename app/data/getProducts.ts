@@ -1,6 +1,7 @@
 "use server";
 
 import { v4 as uuidv4 } from "uuid";
+import { date } from "zod";
 
 type ProductsType = [dataProductType[], Number];
 
@@ -16,6 +17,7 @@ export type dataProductType = {
   price: number;
   customPrice: number;
   unstitchPrice: number;
+  createdAt: string;
 };
 
 export default async function getProducts() {
@@ -35,6 +37,7 @@ export default async function getProducts() {
         price: 20,
         customPrice: 30,
         unstitchPrice: 40,
+        createdAt: JSON.stringify(Date.now())
       }
     ],
     100,
