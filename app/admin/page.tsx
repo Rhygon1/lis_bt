@@ -455,7 +455,7 @@ export default function AppSidebar() {
                                       <video
                                         src={item.preview}
                                         controls
-                                        className="w-fit max-h-48 rounded"
+                                        className="w-fit rounded"
                                       />
 
                                       <button
@@ -471,7 +471,7 @@ export default function AppSidebar() {
                                       <img
                                         src={item.preview}
                                         alt="preview"
-                                        className="w-fit max-h-48 rounded object-cover"
+                                        className="w-fit rounded object-cover"
                                       />
                                       <button
                                         type="button"
