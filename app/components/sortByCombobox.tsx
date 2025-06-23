@@ -7,16 +7,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-export function SelectDemo() {
-  const [selectedOption, setSelectedOption] = useState("");
+type propsType = {
+  selectedSort: string,
+  setSelectedSort: Dispatch<SetStateAction<string>>
+}
+
+export function SelectDemo(props: propsType) {
 
   return (
     <Select
-      value={selectedOption}
+      value={props.selectedSort}
       onValueChange={(value) => {
-        setSelectedOption(value);
+        props.setSelectedSort(value);
       }}
     >
       <SelectTrigger className="w-[180px]">

@@ -20,7 +20,44 @@ export type dataProductType = {
   createdAt: string;
 };
 
-export default async function getProducts() {
+export default async function getProducts(col: string, sort: string) {
+  let res = supabase.from('products').select("*", { count: 'exact' })
+  if(col){
+    res = res.eq("type", col)
+  }
+  if(sort){
+    if(sort == "p0"){
+      res = res.order("price", {ascending: true})
+    } else if(sort == "p1"){
+      res = res.order("price", {ascending: false})
+    } else if(sort == "d0"){
+      res = res.order("created_at", {ascending: false})
+    } else if(sort == "d1"){
+      res = res.order("created_at", {ascending: true})
+    }
+  }
+
+  const { data, count } = await res;
+
+  if(data?.length){
+    return [data.map(product => {
+      return {
+      title: product.title,
+      description: product.description,
+      media: product.media,
+      price: product.price,
+      customPrice: product.custom_price,
+      unstitchPrice: product.unstitch_price,
+      dispatch: product.dispatch,
+      sizes: product.sizes,
+      inStock: product.in_stock,
+      type: product.type,
+      id: product.id,
+      createdAt: product.created_at
+    }
+    }), count] as ProductsType
+  }
+
   return [
     [
       {

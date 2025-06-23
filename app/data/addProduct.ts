@@ -3,10 +3,14 @@
 import { dataProductType } from "./getProducts";
 import { v4 as uuidv4 } from "uuid";
 import supabase from "@/lib/db";
+import clerkClient from "@/lib/clerk";
 
 export async function addProduct(
-  product: Omit<dataProductType, "id" | "createdAt">
+  product: Omit<dataProductType, "id" | "createdAt">, userID: string
 ): Promise<{ success: boolean; id?: string; error?: string }> {
+  if ((await clerkClient.users.getUser(userID)).publicMetadata.admin != true) {
+    return { success: false, error: 'UNAUTHORIZED' };
+  }
   try {
     const res = await supabase.from("products").insert({
       title: product.title,
@@ -18,7 +22,7 @@ export async function addProduct(
       dispatch: product.dispatch,
       sizes: product.sizes,
       in_stock: product.inStock,
-      type: product.type
+      type: product.type,
     });
 
     if (res.error) {

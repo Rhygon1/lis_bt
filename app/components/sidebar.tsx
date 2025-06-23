@@ -38,6 +38,10 @@ export default function AppSidebar(props: propsType) {
         <SheetHeader>
           <SheetTitle>Categories</SheetTitle>
         </SheetHeader>
+        <div key="all" className="ml-5">
+          <Link href={`/search`}>All</Link>
+          <Separator className="my-2 mr-5 text-black" />
+        </div>
         {props.collections.map((a) => {
           return (
             <div key={`${a}`} className="ml-5">

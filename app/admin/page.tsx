@@ -74,27 +74,34 @@ type MediaFile = {
   preview: string;
 };
 
-const formSchema = z.object({
-  id: z.string(),
-  title: z.string().min(2),
-  type: z.string().min(2),
-  sizes: z.array(z.string()).min(1),
-  dispatch: z.string().min(1),
-  inStock: z.boolean(),
-  media: z.array(z.instanceof(File)).min(1),
-  description: z.string().min(2),
-  price: z.coerce.number().min(1),
-  customPrice: z.coerce.number().min(1),
-  unstitchPrice: z.coerce.number().min(1),
-});
-
-export type productType = z.infer<typeof formSchema>;
-
-export default function AppSidebar() {
+export default function Main() {
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [loadState, setLoadState] = useState("");
 
-  const { user } = useUser();
+  const formSchema = z.object({
+    id: z.string(),
+    title: z.string().min(2),
+    type: z.string().min(2),
+    sizes: z.array(z.string()).min(1),
+    dispatch: z.string().min(1),
+    inStock: z.boolean(),
+    media: z
+      .array(
+        z.custom<File>(
+          (val) => typeof window !== "undefined" && val instanceof File,
+          {
+            message: "Each media item must be a File",
+          }
+        )
+      )
+      .min(1),
+    description: z.string().min(2),
+    price: z.coerce.number().min(1),
+    customPrice: z.coerce.number().min(1),
+    unstitchPrice: z.coerce.number().min(1),
+  });
+
+  const { isSignedIn, user } = useUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -168,12 +175,15 @@ export default function AppSidebar() {
       unstitchPrice: values.unstitchPrice,
     } as Omit<Omit<dataProductType, "id">, "createdAt">;
 
-    let result = await addProduct(newProduct);
-
-    if (result.success) {
-      setLoadState("check");
+    if (isSignedIn) {
+      let result = await addProduct(newProduct, user.id);
+      if (result.success) {
+        setLoadState("check");
+      } else {
+        console.log(result.error);
+      }
     } else {
-      console.log(result.error);
+      console.error("Not logged in");
     }
 
     console.log(values);
