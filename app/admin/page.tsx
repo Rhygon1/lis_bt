@@ -28,6 +28,15 @@ import { Check, LoaderIcon, X } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { addProduct } from "../data/addProduct";
 import { dataProductType } from "../data/getProducts";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 let collections = [
   "Readymade Suits",
@@ -43,6 +52,21 @@ let collections = [
   "Indo Western",
 ];
 
+let collectionWithOther = [
+  "Readymade Suits",
+  "Anarkalis",
+  "Gowns",
+  "Lehangas",
+  "Menswear",
+  "Girls Kids Dresses",
+  "Boys Kids Dresses",
+  "Jewellery",
+  "Sarees",
+  "Blouses",
+  "Indo Western",
+  "Other",
+];
+
 type MediaFile = {
   id: string;
   file: File;
@@ -52,6 +76,7 @@ type MediaFile = {
 const formSchema = z.object({
   id: z.string(),
   title: z.string().min(2),
+  type: z.string().min(2),
   sizes: z.array(z.string()).min(1),
   dispatch: z.string().min(1),
   inStock: z.boolean(),
@@ -66,7 +91,7 @@ export type productType = z.infer<typeof formSchema>;
 
 export default function AppSidebar() {
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
-  const [loadState, setLoadState] = useState("")
+  const [loadState, setLoadState] = useState("");
 
   const { user } = useUser();
 
@@ -75,6 +100,7 @@ export default function AppSidebar() {
     defaultValues: {
       id: uuidv4(),
       title: "",
+      type: "Other",
       sizes: [],
       dispatch: "",
       inStock: true,
@@ -109,7 +135,7 @@ export default function AppSidebar() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    setLoadState("loading")
+    setLoadState("loading");
     values.id = uuidv4();
     let urls = await Promise.all(
       values.media.map(async (file) => {
@@ -123,6 +149,7 @@ export default function AppSidebar() {
 
     let newProduct = {
       title: values.title,
+      type: values.type,
       sizes: values.sizes,
       dispatch: values.dispatch,
       inStock: values.inStock,
@@ -135,10 +162,10 @@ export default function AppSidebar() {
 
     let result = await addProduct(newProduct);
 
-    if(result.success){
-        setLoadState("check")
+    if (result.success) {
+      setLoadState("check");
     } else {
-        console.log(result.error)
+      console.log(result.error);
     }
 
     console.log(values);
@@ -199,7 +226,7 @@ export default function AppSidebar() {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit, (errors) => {
-                  console.error("Validation Errors", errors);
+                  console.log("Validation Errors", errors);
                 })}
                 className="space-y-8 m-5"
               >
@@ -211,6 +238,34 @@ export default function AppSidebar() {
                       <FormLabel>Title</FormLabel>
                       <FormControl>
                         <Input placeholder="Title" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type</FormLabel>
+                      <FormControl>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Other" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Type</SelectLabel>
+                              {collectionWithOther.map((c) => {
+                                return <SelectItem key={c} value={c}>{c}</SelectItem>;
+                              })}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -438,11 +493,12 @@ export default function AppSidebar() {
                   </DragDropContext>
                 )}
 
-                {
-                    loadState != "" && 
-                    (loadState == "loading" ? <LoaderIcon className="w-10 animate-spin"></LoaderIcon>
-                    : <Check className="w-10"></Check>)
-                }
+                {loadState != "" &&
+                  (loadState == "loading" ? (
+                    <LoaderIcon className="w-10 animate-spin"></LoaderIcon>
+                  ) : (
+                    <Check className="w-10"></Check>
+                  ))}
 
                 <Button type="submit">Submit</Button>
               </form>

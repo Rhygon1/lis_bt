@@ -17,6 +17,7 @@ export async function addProduct(
       CREATE TABLE IF NOT EXISTS products (
         id TEXT PRIMARY KEY,
         title TEXT NOT NULL,
+        type TEXT NOT NULL,
         sizes TEXT NOT NULL,
         dispatch TEXT NOT NULL,
         in_stock BOOLEAN NOT NULL,
@@ -31,9 +32,9 @@ export async function addProduct(
     // Insert product
     await sql`
       INSERT INTO products (
-        id, title, sizes, dispatch, in_stock, media, description, price, custom_price, unstitch_price
+        id, title, type, sizes, dispatch, in_stock, media, description, price, custom_price, unstitch_price
       ) VALUES (
-        ${id}, ${product.title}, ${JSON.stringify(product.sizes)}, ${
+        ${id}, ${product.title}, ${product.type}, ${JSON.stringify(product.sizes)}, ${
       product.dispatch
     }, ${product.inStock}, ${JSON.stringify(product.media)}, ${
       product.description
