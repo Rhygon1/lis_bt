@@ -1,7 +1,7 @@
 "use server";
 
 import { v4 as uuidv4 } from "uuid";
-import { date } from "zod";
+import supabase from "@/lib/db";
 
 type ProductsType = [dataProductType[], Number];
 
@@ -12,7 +12,7 @@ export type dataProductType = {
   sizes: string[];
   dispatch: string;
   inStock: boolean;
-  media: String[];
+  media: string[];
   description: string;
   price: number;
   customPrice: number;
