@@ -1,28 +1,361 @@
 "use server";
 
-export type productType = {
-    name: string,
-    amt: number,
-    imgs: string[]
-}
+import { v4 as uuidv4 } from "uuid";
 
-type ProductsType = [productType[], Number]
+type ProductsType = [dataProductType[], Number];
+
+export type dataProductType = {
+  id: string;
+  title: string;
+  sizes: string[];
+  dispatch: string;
+  inStock: boolean;
+  media: String[];
+  description: string;
+  price: number;
+  customPrice: number;
+  unstitchPrice: number;
+};
 
 export default async function getProducts() {
   return [
     [
-      { name: "1", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "2", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "3asada", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "d5asdadda", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "da4seda", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "das6cda", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "dase7da", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "dasdc8wa", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "dasead9a", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "dasdada20", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "dascada23", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
-      { name: "dasdcaea34", amt: 76, imgs: ["https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg"] },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
+      {
+        id: uuidv4(),
+        title: "TITLE",
+        sizes: ["XS", "S"],
+        dispatch: "soon",
+        inStock: true,
+        media: [
+          "https://6jax627y1avwmget.public.blob.vercel-storage.com/france-in-pictures-beautiful-places-to-photograph-eiffel-tower-pn3n5wYyPqnueaNLkNyQyccgSZ9YO2.jpg",
+        ],
+        description: "DISC",
+        price: 20,
+        customPrice: 30,
+        unstitchPrice: 40,
+      },
     ],
     100,
   ] as ProductsType;

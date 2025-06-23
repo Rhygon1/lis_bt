@@ -4,10 +4,10 @@ import { useSearchParams } from "next/navigation";
 import getProducts from "../data/getProducts";
 import { useEffect, useState } from "react";
 import { SelectDemo } from "./sortByCombobox";
-import { productType } from "../data/getProducts";
+import { dataProductType } from "@/app/data/getProducts";
 import ProductCard from "./productCard";
 
-type ProductsType = [productType[], Number];
+type ProductsType = [dataProductType[], Number];
 
 export default function MainSearch() {
   const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ export default function MainSearch() {
       </div>
       <div className="grid grid-cols-2 row-auto gap-1 lg:grid-cols-4 md:gap-3 my-10">
         {productsData[0].map((a) => {
-          return <ProductCard key={a.name} product={a}></ProductCard>;
+          return <ProductCard key={a.id} product={a}></ProductCard>;
         })}
       </div>
     </div>
