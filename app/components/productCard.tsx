@@ -1,4 +1,5 @@
-import currency from "currency.js";
+"use client"
+
 import { Heart, Trash } from "lucide-react";
 import { dataProductType } from "@/app/data/getProducts";
 import { useState } from "react";
@@ -19,7 +20,7 @@ import { useRouter } from 'next/navigation';
 import { Currency } from "./currency";
 
 type propsType = {
-  updateProducts: () => void;
+  updateProducts: () => Promise<void>;
   product: dataProductType;
 };
 
@@ -72,7 +73,7 @@ export default function ProductCard(props: propsType) {
                     className="w-2/5"
                     onClick={async () => {
                       await delProduct(props.product.id, user.id);
-                      props.updateProducts()
+                      await props.updateProducts()
                     }}
                     variant="destructive"
                   >
