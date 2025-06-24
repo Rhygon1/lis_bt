@@ -16,11 +16,13 @@ import {
 import { delProduct } from "../data/delProduct";
 import { SignedIn, useUser } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
+import { Currency } from "./currency";
 
 type propsType = {
   updateProducts: () => void;
   product: dataProductType;
 };
+
 export default function ProductCard(props: propsType) {
   const { user } = useUser();
   let [wishlisted, setWishlisted] = useState(false);
@@ -43,9 +45,7 @@ export default function ProductCard(props: propsType) {
       <div className="flex justify-between mt-2">
         <div className="flex flex-col">
           <p className="text-sm text-slate-600">{props.product.title}</p>
-          <p className="text-slate-900 text-sm font-semibold">
-            {currency(props.product.price).format()}
-          </p>
+          <Currency price={props.product.price}></Currency>
         </div>
         <SignedIn>
           {user?.publicMetadata.admin == true && (

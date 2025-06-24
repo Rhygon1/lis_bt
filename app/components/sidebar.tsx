@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useUser, SignedIn } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import CountrySelector from "./currencySelector";
 
 type propsType = {
   collections: string[];
@@ -35,6 +36,7 @@ export default function AppSidebar(props: propsType) {
             </Link>
           )}
         </SignedIn>
+        <CountrySelector></CountrySelector>
         <SheetHeader>
           <SheetTitle>Categories</SheetTitle>
         </SheetHeader>
