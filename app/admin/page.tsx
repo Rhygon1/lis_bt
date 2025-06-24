@@ -325,7 +325,7 @@ export default function Main() {
                             <ToggleGroupItem
                               key={size}
                               value={size}
-                              className="px-20 py-2 text-lg rounded-xl border w-fit"
+                              className="px-20 py-2 text-lg rounded-xl border w-fit data-[state=on]:bg-slate-800 data-[state=on]:text-white"
                             >
                               <p>{size}</p>
                             </ToggleGroupItem>
