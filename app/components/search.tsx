@@ -26,9 +26,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {useRouter} from "next/navigation";
+import { useState } from "react";
 
 export default function SearchBar() {
   const router = useRouter()
+  const [open, setOpen] = useState(false)
 
   const formSchema = z.object({
     filter: z
@@ -48,10 +50,11 @@ export default function SearchBar() {
     console.log(values);
 
     router.push(`/search?search=${encodeURIComponent(values.filter as string)}`);
+    setOpen(false)
   }
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger>
         <Search className="flex justify-start"></Search>
       </SheetTrigger>
