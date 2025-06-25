@@ -15,7 +15,7 @@ export default function CurrencySelector() {
     "countryCode",
     "{currencyCode}"
   );
-  const countries = ["US", "GB", "AU", "NZ", "MY", "SG"]
+  const countries = ["US", "GB", "AU", "NZ", "MY", "SG", "CA"]
   const [currency, setCurrency, _] = useContext(CurrencyContext)
 
   return (
