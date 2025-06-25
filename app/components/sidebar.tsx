@@ -41,13 +41,13 @@ export default function AppSidebar(props: propsType) {
           <SheetTitle>Categories</SheetTitle>
         </SheetHeader>
         <div key="all" className="ml-5">
-          <Link href={`/search`}>All</Link>
+          <a href={`/search`}>All</a>
           <Separator className="my-2 mr-5 text-black" />
         </div>
         {props.collections.map((a) => {
           return (
             <div key={`${a}`} className="ml-5">
-              <Link href={`/search?col=${a}`}>{`${a}`}</Link>
+              <a href={`/search?col=${encodeURIComponent(a as string)}`}>{`${a}`}</a>
               <Separator className="my-2 mr-5 text-black" />
             </div>
           );

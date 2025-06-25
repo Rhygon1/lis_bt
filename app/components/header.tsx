@@ -1,9 +1,10 @@
 'use client'
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { User, Heart, Search } from "lucide-react";
+import { User, Heart } from "lucide-react";
 import AppSidebar from "./sidebar";
 import Link from "next/link";
+import SearchBar from "./search";
 
 type propsType = {
   collections: string[]
@@ -21,7 +22,7 @@ export default function Header(props: propsType) {
         <p className="font-[Overpass] font-bold text-lg">LIS BOUTIQUE</p>
       </Link>
       <div className="flex w-1/4 justify-end gap-3">
-        <Search></Search>
+        <SearchBar></SearchBar>
         <SignedOut>
           <SignInButton>
             <User />

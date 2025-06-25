@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select"
 import { CurrencyContext } from "@/app/currencyContext";
 
-export default function CountrySelector() {
+export default function CurrencySelector() {
   const myCountryCodesObject = countryCodes.customList(
     "countryCode",
     "{currencyCode}"

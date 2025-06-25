@@ -13,6 +13,7 @@ type ProductsType = [dataProductType[], number];
 export default function MainSearch() {
   const searchParams = useSearchParams();
   const collection = searchParams.get("col") || "";
+  const search = searchParams.get("search") || "";
   const [selectedSort, setSelectedSort] = useState("");
   const [productsData, setProductsData] = useState<dataProductType[]>([]);
   const [totalCount, setTotalCount] = useState<Number>(0);
@@ -36,31 +37,35 @@ export default function MainSearch() {
   );
 
   async function fetchProducts(pageToLoad: number, reset = false) {
-  setLoading(true);
+    setLoading(true);
 
-  const [fetchedProducts, count] = await getProducts(collection, selectedSort, pageToLoad);
+    const [fetchedProducts, count] = await getProducts(
+      collection,
+      selectedSort,
+      pageToLoad,
+      search
+    );
 
-  if (reset) {
-    setProductsData(fetchedProducts);
-    setHasMore(fetchedProducts.length < count); // set based on count
-  } else {
-    setProductsData((prev) => {
-      const newData = [...prev, ...fetchedProducts];
-      setHasMore(newData.length < count); // set based on combined length
-      return newData;
-    });
+    if (reset) {
+      setProductsData(fetchedProducts);
+      setHasMore(fetchedProducts.length < count); // set based on count
+    } else {
+      setProductsData((prev) => {
+        const newData = [...prev, ...fetchedProducts];
+        setHasMore(newData.length < count); // set based on combined length
+        return newData;
+      });
+    }
+
+    setTotalCount(count);
+    setLoading(false);
   }
-
-  setTotalCount(count);
-  setLoading(false);
-}
-
 
   // Reset on filter/sort/collection change
   useEffect(() => {
     setPage(0);
     fetchProducts(0, true);
-  }, [selectedSort, collection]);
+  }, [selectedSort, collection, search]);
 
   // Fetch more on scroll
   useEffect(() => {
@@ -80,24 +85,38 @@ export default function MainSearch() {
         />
       </div>
 
-      <div className="grid grid-cols-2 row-auto gap-1 lg:grid-cols-4 md:gap-3 my-10">
+      {search && <p className="w-full h-8 mt-7 flex justify-center items-center text-2xl font-[Overpass] font-thin">Search results for "{search}"</p>}
+
+      <div className="grid grid-cols-2 row-auto gap-1 lg:grid-cols-4 md:gap-3 mb-10 mt-8">
         {productsData.map((product, idx) => {
           if (idx === productsData.length - 1) {
             return (
               <div ref={lastProductRef} key={product.id}>
-                <ProductCard updateProducts={() => fetchProducts(0, true)} product={product} />
+                <ProductCard
+                  updateProducts={() => fetchProducts(0, true)}
+                  product={product}
+                />
               </div>
             );
           } else {
             return (
-              <ProductCard key={product.id} updateProducts={() => fetchProducts(0, true)} product={product} />
+              <ProductCard
+                key={product.id}
+                updateProducts={() => fetchProducts(0, true)}
+                product={product}
+              />
             );
           }
         })}
         {loading &&
-          new Array(10).fill(null).map((_, i) => (
-            <Skeleton key={`skeleton-${i}`} className="w-full aspect-3/5 mb-5" />
-          ))}
+          new Array(10)
+            .fill(null)
+            .map((_, i) => (
+              <Skeleton
+                key={`skeleton-${i}`}
+                className="w-full aspect-3/5 mb-5"
+              />
+            ))}
       </div>
     </div>
   );

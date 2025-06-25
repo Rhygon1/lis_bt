@@ -23,7 +23,8 @@ export type dataProductType = {
 export default async function getProducts(
   col: string,
   sort: string,
-  page: number
+  page: number,
+  search: string
 ) {
   let res = supabase.from("products").select("*", { count: "exact" });
   if (col) {
@@ -40,6 +41,10 @@ export default async function getProducts(
       res = res.order("created_at", { ascending: true });
     }
   }
+  if (search){
+    res = res.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+  }
+  
   let pageLength = 7;
   res = res.range(page * pageLength, page * pageLength + (pageLength - 1));
 
