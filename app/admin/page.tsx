@@ -183,7 +183,7 @@ export default function Main() {
     } as Omit<Omit<dataProductType, "id">, "createdAt">;
 
     if (user != null) {
-      let result = await addProduct(newProduct, user.id);
+      let result = await addProduct(newProduct);
       if (result.success) {
         setLoadState("check");
       } else {
