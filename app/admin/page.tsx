@@ -2,7 +2,7 @@
 
 import { genUploader } from "uploadthing/client";
 import type { UploadRouter } from "@/app/api/uploadthing/core";
-export const { uploadFiles } = genUploader<UploadRouter>();
+const { uploadFiles } = genUploader<UploadRouter>();
 
 import Header from "../components/header";
 import Footer from "../components/footer";
