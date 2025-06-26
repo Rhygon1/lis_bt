@@ -1,5 +1,9 @@
 "use client";
 
+import { genUploader } from "uploadthing/client";
+import type { UploadRouter } from "@/app/api/uploadthing/core";
+export const { uploadFiles } = genUploader<UploadRouter>();
+
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -143,24 +147,27 @@ export default function Main() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoadState("loading");
     values.id = uuidv4();
-    let urls = await Promise.all(
-      values.media.map(async (file) => {
-        if (!file.type.startsWith("video/")) {
-          const { webpBlob, fileName } = await webpfy({ image: file });
-          const newBlob = await upload(fileName, webpBlob, {
-            access: "public",
-            handleUploadUrl: "/api/createToken",
-          });
-          return newBlob.url;
-        } else {
-          const newBlob = await upload(file.name, file, {
-            access: "public",
-            handleUploadUrl: "/api/createToken",
-          });
-          return newBlob.url;
-        }
-      })
-    );
+    let imageFiles: File[] = [];
+    let videoFiles: File[] = [];
+
+    await Promise.all(values.media.map(async (file) => {
+      if (!file.type.startsWith("video/")) {
+        const { webpBlob, fileName } = await webpfy({ image: file });
+        imageFiles.push(new File([webpBlob], fileName, { type: "image/webp" }));
+      } else {
+        videoFiles.push(file);
+      }
+    }));
+
+    let imageResponses = await uploadFiles("imageUploader", {
+      files: imageFiles,
+    });
+    let imageUrls = imageResponses.map(a => a.ufsUrl)
+    const videoResponses = await uploadFiles("videoUploader", {
+      files: videoFiles
+    })
+    let videoUrls = videoResponses.map(a => a.ufsUrl)
+    let urls = [...imageUrls, ...videoUrls]
 
     let newProduct = {
       title: values.title,
@@ -234,318 +241,318 @@ export default function Main() {
     );
   }, [mediaFiles]);
 
-  if (!user){
-    return <div>404 Unauthorized</div>
+  if (!user) {
+    return <div>404 Unauthorized</div>;
   }
 
   return (
     <>
       <Header collections={collections}></Header>
-        {customData.admin == true && (
-          <>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit, (errors) => {
-                  console.log("Validation Errors", errors);
-                })}
-                className="space-y-8 m-5"
-              >
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Title" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Type</FormLabel>
-                      <FormControl>
-                        <Select
-                          value={field.value}
-                          onValueChange={field.onChange}
-                        >
-                          <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Other" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectLabel>Type</SelectLabel>
-                              {collectionWithOther.map((c) => {
-                                return (
-                                  <SelectItem key={c} value={c}>
-                                    {c}
-                                  </SelectItem>
-                                );
-                              })}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="sizes"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Sizes</FormLabel>
-                      <FormControl>
-                        <ToggleGroup
-                          type="multiple"
-                          className="flex flex-wrap gap-2"
-                          value={field.value}
-                          onValueChange={field.onChange}
-                        >
-                          {[
-                            "Unstitched",
-                            "Customized",
-                            "XS",
-                            "S",
-                            "M",
-                            "L",
-                            "XL",
-                            "XXL",
-                            "3XL",
-                            "4XL",
-                            "5XL",
-                            "6XL",
-                            "7XL",
-                            "8XL",
-                            "0-6 months",
-                            "6-12 months",
-                            "1-2 years",
-                            "2-3 years",
-                            "3-4 years",
-                            "4-5 years",
-                            "5-6 years",
-                            "6-7 years",
-                            "7-8 years",
-                            "8-9 years",
-                            "9-10 years",
-                            "10-11 years",
-                            "11-12 years",
-                            "12-13 years",
-                            "13-14 years",
-                            "14-15 years"
-                          ].map((size) => (
-                            <ToggleGroupItem
-                              key={size}
-                              value={size}
-                              className="px-20 py-2 text-lg rounded-xl border w-fit data-[state=on]:bg-slate-800 data-[state=on]:text-white"
-                            >
-                              <p>{size}</p>
-                            </ToggleGroupItem>
-                          ))}
-                        </ToggleGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="dispatch"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Dispatch</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          className="flex flex-col gap-2 mt-3"
-                          value={field.value}
-                          onValueChange={field.onChange}
-                        >
-                          {[
-                            "Ready to be shipped!",
-                            "Will be shipped in 15-20 days.",
-                          ].map((type) => (
-                            <div className="flex gap-3" key={type}>
-                              <RadioGroupItem
-                                key={type}
-                                value={type}
-                                id={type}
-                                className="px-2 py-2 text-lg rounded-xl border w-fit"
-                              />
-                              <Label htmlFor={type}>{type}</Label>
-                            </div>
-                          ))}
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="inStock"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>In Stock</FormLabel>
-                      <FormControl>
-                        <div className="flex items-center space-x-2">
-                          <Switch
-                            id="inStock-switch"
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                          <Label htmlFor="inStock-switch">In stock</Label>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Normal Price</FormLabel>
-                      <FormControl>
-                        <Input type="number" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="customPrice"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Customised Price</FormLabel>
-                      <FormControl>
-                        <Input type="number" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="unstitchPrice"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Unstitched Price</FormLabel>
-                      <FormControl>
-                        <Input type="number" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Input
-                  type="file"
-                  name="file"
-                  accept="image/*,video/*"
-                  required
-                  multiple
-                  onChange={handleFileChange}
-                ></Input>
-
-                {mediaFiles.length > 0 && (
-                  <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId="droppable" direction="horizontal">
-                      {(provided, snapshot) => (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          className="flex max-h-[80vh] overflow-x-auto relative max-w-[95%]"
-                        >
-                          {mediaFiles.map((item, i) => (
-                            <Draggable
-                              key={item.id}
-                              draggableId={item.id}
-                              index={i}
-                            >
-                              {(provided, snapshot) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  className="cursor-grab p-1 basis-[40%] shrink-0 py-5 border-2 border-black active:cursor-grabbing"
-                                >
-                                  {item.file.type.startsWith("video/") ? (
-                                    <div className="relative w-fit">
-                                      <video
-                                        src={item.preview}
-                                        controls
-                                        className="w-fit rounded"
-                                      />
-
-                                      <button
-                                        type="button"
-                                        onClick={() => remove(item.id)}
-                                        className="absolute top-3 right-3 rounded-full bg-white w-5 h-5 flex items-center justify-center"
-                                      >
-                                        <X className="w-4"></X>
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    <div className="relative w-fit">
-                                      <img
-                                        src={item.preview}
-                                        alt="preview"
-                                        className="w-fit rounded object-cover"
-                                      />
-                                      <button
-                                        type="button"
-                                        onClick={() => remove(item.id)}
-                                        className="absolute top-3 right-3 rounded-full bg-white w-5 h-5 flex items-center justify-center"
-                                      >
-                                        <X className="w-4"></X>
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                            </Draggable>
-                          ))}
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </DragDropContext>
+      {customData.admin == true && (
+        <>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit, (errors) => {
+                console.log("Validation Errors", errors);
+              })}
+              className="space-y-8 m-5"
+            >
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Title" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
+              />
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Other" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Type</SelectLabel>
+                            {collectionWithOther.map((c) => {
+                              return (
+                                <SelectItem key={c} value={c}>
+                                  {c}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="sizes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sizes</FormLabel>
+                    <FormControl>
+                      <ToggleGroup
+                        type="multiple"
+                        className="flex flex-wrap gap-2"
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        {[
+                          "Unstitched",
+                          "Customized",
+                          "XS",
+                          "S",
+                          "M",
+                          "L",
+                          "XL",
+                          "XXL",
+                          "3XL",
+                          "4XL",
+                          "5XL",
+                          "6XL",
+                          "7XL",
+                          "8XL",
+                          "0-6 months",
+                          "6-12 months",
+                          "1-2 years",
+                          "2-3 years",
+                          "3-4 years",
+                          "4-5 years",
+                          "5-6 years",
+                          "6-7 years",
+                          "7-8 years",
+                          "8-9 years",
+                          "9-10 years",
+                          "10-11 years",
+                          "11-12 years",
+                          "12-13 years",
+                          "13-14 years",
+                          "14-15 years",
+                        ].map((size) => (
+                          <ToggleGroupItem
+                            key={size}
+                            value={size}
+                            className="px-20 py-2 text-lg rounded-xl border w-fit data-[state=on]:bg-slate-800 data-[state=on]:text-white"
+                          >
+                            <p>{size}</p>
+                          </ToggleGroupItem>
+                        ))}
+                      </ToggleGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="dispatch"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dispatch</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        className="flex flex-col gap-2 mt-3"
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        {[
+                          "Ready to be shipped!",
+                          "Will be shipped in 15-20 days.",
+                        ].map((type) => (
+                          <div className="flex gap-3" key={type}>
+                            <RadioGroupItem
+                              key={type}
+                              value={type}
+                              id={type}
+                              className="px-2 py-2 text-lg rounded-xl border w-fit"
+                            />
+                            <Label htmlFor={type}>{type}</Label>
+                          </div>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="inStock"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>In Stock</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center space-x-2">
+                        <Switch
+                          id="inStock-switch"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label htmlFor="inStock-switch">In stock</Label>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Normal Price</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="customPrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Customised Price</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="unstitchPrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Unstitched Price</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                {loadState != "" &&
-                  (loadState == "loading" ? (
-                    <LoaderIcon className="w-10 animate-spin"></LoaderIcon>
-                  ) : (
-                    <Check className="w-10"></Check>
-                  ))}
+              <Input
+                type="file"
+                name="file"
+                accept="image/*,video/*"
+                required
+                multiple
+                onChange={handleFileChange}
+              ></Input>
 
-                <Button type="submit">Submit</Button>
-              </form>
-            </Form>
-            <Footer></Footer>
-          </>
-        )}
+              {mediaFiles.length > 0 && (
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <Droppable droppableId="droppable" direction="horizontal">
+                    {(provided, snapshot) => (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className="flex max-h-[80vh] overflow-x-auto relative max-w-[95%]"
+                      >
+                        {mediaFiles.map((item, i) => (
+                          <Draggable
+                            key={item.id}
+                            draggableId={item.id}
+                            index={i}
+                          >
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="cursor-grab p-1 basis-[40%] shrink-0 py-5 border-2 border-black active:cursor-grabbing"
+                              >
+                                {item.file.type.startsWith("video/") ? (
+                                  <div className="relative w-fit">
+                                    <video
+                                      src={item.preview}
+                                      controls
+                                      className="w-fit rounded"
+                                    />
+
+                                    <button
+                                      type="button"
+                                      onClick={() => remove(item.id)}
+                                      className="absolute top-3 right-3 rounded-full bg-white w-5 h-5 flex items-center justify-center"
+                                    >
+                                      <X className="w-4"></X>
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <div className="relative w-fit">
+                                    <img
+                                      src={item.preview}
+                                      alt="preview"
+                                      className="w-fit rounded object-cover"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => remove(item.id)}
+                                      className="absolute top-3 right-3 rounded-full bg-white w-5 h-5 flex items-center justify-center"
+                                    >
+                                      <X className="w-4"></X>
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+              )}
+
+              {loadState != "" &&
+                (loadState == "loading" ? (
+                  <LoaderIcon className="w-10 animate-spin"></LoaderIcon>
+                ) : (
+                  <Check className="w-10"></Check>
+                ))}
+
+              <Button type="submit">Submit</Button>
+            </form>
+          </Form>
+          <Footer></Footer>
+        </>
+      )}
     </>
   );
 }
