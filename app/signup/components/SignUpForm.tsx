@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signup } from "@/utils/supabase/auth-actions";
 import { useUser } from "@/app/components/auth-context";
@@ -28,6 +27,7 @@ export function SignUpForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { refetch } = useUser();
+  const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,13 +40,13 @@ export function SignUpForm({
       return;
     }
 
-    let { error } = await signup(new FormData(e.currentTarget));
+    const { error } = await signup(new FormData(e.currentTarget));
     if (error) {
       setError(error);
       setIsLoading(false);
     } else {
       await refetch();
-      redirect("/");
+      router.push("/login?message=Check email to continue sign in process");
     }
   };
 

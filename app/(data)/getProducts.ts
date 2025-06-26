@@ -1,6 +1,5 @@
 "use server";
 
-import { v4 as uuidv4 } from "uuid";
 import supabase from "@/lib/db";
 
 type ProductsType = [dataProductType[], number];
@@ -45,7 +44,7 @@ export default async function getProducts(
     res = res.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
   }
   
-  let pageLength = 7;
+  const pageLength = 7;
   res = res.range(page * pageLength, page * pageLength + (pageLength - 1));
 
   const { data, count } = await res;

@@ -1,6 +1,5 @@
 "use server";
 
-import supabase from "@/lib/db";
 import { createClient } from "@/utils/supabase/server";
 export async function delProduct(delId: string) {
   const supabase = await createClient();

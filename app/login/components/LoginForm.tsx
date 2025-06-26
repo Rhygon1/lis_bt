@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import GoogleButton from "./SignWithGoogle";
 import { login } from "@/utils/supabase/auth-actions";
 import { useUser } from "@/app/components/auth-context";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export function LoginForm({
   className,
@@ -25,6 +25,8 @@ export function LoginForm({
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const message = searchParams.get("message");
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -73,6 +75,11 @@ export function LoginForm({
                   />
                 </div>
                 {error && <p className="text-sm text-red-500">{error}</p>}
+                {message && (
+                  <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+                    <span className="block sm:inline">{message}</span>
+                  </div>
+                )}
                 <Button
                   type="submit"
                   formAction={async (data) => {

@@ -1,13 +1,10 @@
 "use server";
 
 import { dataProductType } from "./getProducts";
-import { v4 as uuidv4 } from "uuid";
-import supabase from "@/lib/db";
 import { createClient } from "@/utils/supabase/server";
 
 export async function addProduct(
-  product: Omit<dataProductType, "id" | "createdAt">,
-  userID: string
+  product: Omit<dataProductType, "id" | "createdAt">
 ): Promise<{ success: boolean; id?: string; error?: string }> {
   const supabase = await createClient();
   const id = (await supabase.auth.getSession()).data.session?.user.id;
@@ -41,7 +38,7 @@ export async function addProduct(
     }
 
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    return { success: false, error: (error as Error).message };
   }
 }
