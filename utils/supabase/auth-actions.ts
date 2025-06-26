@@ -13,11 +13,11 @@ export async function login(formData: FormData) {
     password: formData.get("password") as string,
   };
 
-  const {error} = await supabase.auth.signInWithPassword(d);
+  const { error } = await supabase.auth.signInWithPassword(d);
 
-  return {error}
-
-  revalidatePath("/", "layout");
+  return {
+    error: error ? { message: error.message, status: error.status } : null,
+  };
 }
 
 export async function signup(formData: FormData) {
@@ -49,7 +49,7 @@ export async function signup(formData: FormData) {
 export async function signout() {
   const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
-  
+
   if (error) {
     console.log("Signout error:", error);
     return { error: error.message };
@@ -68,7 +68,7 @@ export async function signInWithGoogle() {
         access_type: "offline",
         prompt: "consent",
       },
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
     },
   });
 

@@ -91,7 +91,6 @@ export function LoginForm({
                       setIsLoading(false);
                     } else {
                       await refetch();
-                      router.push("/");
                     }
                   }}
                   className="w-full"
