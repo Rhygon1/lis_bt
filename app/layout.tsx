@@ -1,18 +1,11 @@
 import { type Metadata } from "next";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "./components/sidebar";
 
 import "./globals.css";
 import CurrencyLayout from "./currencyContext";
+import { AuthProvider } from "./components/auth-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,18 +26,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
-    <ClerkProvider>
-        <html lang="en">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
-            <CurrencyLayout>
-              {children}
-            </CurrencyLayout>
-          </body>
-        </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <AuthProvider>
+          <CurrencyLayout>{children}</CurrencyLayout>
+        </AuthProvider>
+      </body>
+    </html>
   );
 }

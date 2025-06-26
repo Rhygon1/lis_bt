@@ -1,10 +1,10 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import getProducts from "../data/getProducts";
+import getProducts from "../(data)/getProducts";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { SelectDemo } from "./sortByCombobox";
-import { dataProductType } from "@/app/data/getProducts";
+import { dataProductType } from "@/app/(data)/getProducts";
 import ProductCard from "./productCard";
 import { Skeleton } from "@/components/ui/skeleton";
 

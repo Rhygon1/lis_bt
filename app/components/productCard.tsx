@@ -1,7 +1,7 @@
 "use client"
 
 import { Heart, Trash } from "lucide-react";
-import { dataProductType } from "@/app/data/getProducts";
+import { dataProductType } from "@/app/(data)/getProducts";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,10 +14,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { delProduct } from "../data/delProduct";
-import { SignedIn, useUser } from "@clerk/nextjs";
+import { delProduct } from "../(data)/delProduct";
 import { useRouter } from 'next/navigation';
 import { Currency } from "./currency";
+import { useUser } from "./auth-context";
 
 type propsType = {
   updateProducts: () => Promise<void>;
@@ -25,7 +25,7 @@ type propsType = {
 };
 
 export default function ProductCard(props: propsType) {
-  const { user } = useUser();
+  const { user, customData } = useUser();
   let [wishlisted, setWishlisted] = useState(false);
   const router = useRouter();
 
@@ -48,8 +48,8 @@ export default function ProductCard(props: propsType) {
           <p className="text-sm text-slate-600">{props.product.title}</p>
           <Currency price={props.product.price}></Currency>
         </div>
-        <SignedIn>
-          {user?.publicMetadata.admin == true && (
+        
+          {user && customData.admin == true && (
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="destructive" className="mr-2">
@@ -72,7 +72,7 @@ export default function ProductCard(props: propsType) {
                   <Button
                     className="w-2/5"
                     onClick={async () => {
-                      await delProduct(props.product.id, user.id);
+                      await delProduct(props.product.id);
                       await props.updateProducts()
                     }}
                     variant="destructive"
@@ -83,7 +83,6 @@ export default function ProductCard(props: propsType) {
               </DialogContent>
             </Dialog>
           )}
-        </SignedIn>
       </div>
     </div>
   );

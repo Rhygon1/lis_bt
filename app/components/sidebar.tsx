@@ -13,30 +13,30 @@ import { Separator } from "@/components/ui/separator";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useUser, SignedIn } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import CountrySelector from "./currencySelector";
+import { useUser } from "./auth-context";
 
 type propsType = {
   collections: string[];
 };
 
 export default function AppSidebar(props: propsType) {
-  const { user } = useUser();
-
+  const { user, customData } = useUser();
+  
   return (
     <Sheet>
       <SheetTrigger>
         <Menu className="flex justify-start"></Menu>
       </SheetTrigger>
       <SheetContent side="left">
-        <SignedIn>
-          {user?.publicMetadata.admin == true && (
-            <Link href="/admin" className="ml-4 mt-5">
-              <Button>Make product</Button>
-            </Link>
-          )}
-        </SignedIn>
+        {(user && customData.admin == true) ? (
+          <Link href="/admin" className="ml-4 mt-5">
+            <Button>Make product</Button>
+          </Link>
+        ) : (
+          <div className="mt-5"></div>
+        )}
         <CountrySelector></CountrySelector>
         <SheetHeader>
           <SheetTitle>Categories</SheetTitle>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useUser, SignedIn, SignedOut } from "@clerk/nextjs";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,8 +25,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import { Check, LoaderIcon, X } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { addProduct } from "../data/addProduct";
-import { dataProductType } from "../data/getProducts";
+import { addProduct } from "../(data)/addProduct";
+import { dataProductType } from "../(data)/getProducts";
 import {
   Select,
   SelectContent,
@@ -38,6 +37,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import webpfy from "webpfy";
+import { useUser } from "../components/auth-context";
 
 let collections = [
   "Readymade Suits",
@@ -101,7 +101,7 @@ export default function Main() {
     unstitchPrice: z.coerce.number().min(1),
   });
 
-  const { isSignedIn, user } = useUser();
+  const { user, customData } = useUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -175,7 +175,7 @@ export default function Main() {
       unstitchPrice: values.unstitchPrice,
     } as Omit<Omit<dataProductType, "id">, "createdAt">;
 
-    if (isSignedIn) {
+    if (user != null) {
       let result = await addProduct(newProduct, user.id);
       if (result.success) {
         setLoadState("check");
@@ -234,12 +234,14 @@ export default function Main() {
     );
   }, [mediaFiles]);
 
+  if (!user){
+    return <div>404 Unauthorized</div>
+  }
+
   return (
     <>
       <Header collections={collections}></Header>
-      <SignedOut>404 Unauthorized</SignedOut>
-      <SignedIn>
-        {user?.publicMetadata.admin == true && (
+        {customData.admin == true && (
           <>
             <Form {...form}>
               <form
@@ -544,7 +546,6 @@ export default function Main() {
             <Footer></Footer>
           </>
         )}
-      </SignedIn>
     </>
   );
 }
