@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 
-const isVideo = (url) => url.match(/\.(mp4|webm|ogg)$/i);
+const isVideo = (url: string) => url.match(/\.(mp4|webm|ogg)$/i);
 
-export const ProductImageSlider = ({ slides }) => {
+export const ProductImageSlider = ({ slides }: { slides: string[] }) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [mainEmblaRef, mainEmblaApi] = useEmblaCarousel({ dragFree: true })
   const [thumbEmblaRef, thumbEmblaApi] = useEmblaCarousel({
@@ -14,7 +14,7 @@ export const ProductImageSlider = ({ slides }) => {
   })
 
   const onThumbClick = useCallback(
-    (index) => {
+    (index: number) => {
       if (!mainEmblaApi || !thumbEmblaApi) return
       mainEmblaApi.scrollTo(index)
     },
