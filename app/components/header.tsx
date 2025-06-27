@@ -7,7 +7,7 @@ import SearchBar from "./search";
 import { useUser } from "./auth-context";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
-import {v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from "uuid";
 import {
   Popover,
   PopoverContent,
@@ -24,13 +24,13 @@ type propsType = {
 
 export default function Header(props: propsType) {
   const { user, customData, refetch } = useUser();
-  const router = useRouter()
+  const router = useRouter();
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   return (
     <header className="flex justify-between items-center p-4 gap-4 h-16">
       <div className="w-1/3">
-        <AppSidebar {...props}></AppSidebar>
+        <AppSidebar collections={props.collections}></AppSidebar>
       </div>
       <Link prefetch={true} href="/" className="w-1/3">
         <p className="font-[Overpass] font-bold text-nowrap">LIS BOUTIQUE</p>
@@ -61,10 +61,10 @@ export default function Header(props: propsType) {
                   variant="secondary"
                   className="bg-white py-6 w-full font-thin flex justify-start gap-4"
                   onClick={async () => {
-                    setIsSigningOut(true)
-                    await signout()
-                    await refetch()
-                    setIsSigningOut(false)
+                    setIsSigningOut(true);
+                    await signout();
+                    await refetch();
+                    setIsSigningOut(false);
                   }}
                   disabled={isSigningOut}
                 >
@@ -75,7 +75,7 @@ export default function Header(props: propsType) {
             </PopoverContent>
           </Popover>
         ) : (
-          <button onClick={() => router.push('/login')}>
+          <button onClick={() => router.push("/login")}>
             <User></User>
           </button>
         )}

@@ -27,16 +27,17 @@ function getCurrencySymbol(isoCode: string, locale = "en-US") {
 }
 
 export function Currency(props: propsType) {
-  const USDPrice = Number(props.price.toPrecision(2));
-  const [price, setPrice] = useState(USDPrice);
   const [currencyType, _, exchange] = useContext(CurrencyContext);
+  const [price, setPrice] = useState(Number(props.price.toPrecision(2)) * exchange);
 
   useEffect(() => {
-    setPrice(USDPrice * exchange);
-  }, [exchange]);
+    setPrice(Number(props.price.toPrecision(2)) * exchange);
+  }, [props.price, exchange]);
+
   return (
     <p className="text-slate-900 text-sm font-semibold">
       {currency(price).format({ symbol: getCurrencySymbol(currencyType) })}
     </p>
   );
 }
+

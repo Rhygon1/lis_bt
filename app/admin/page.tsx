@@ -9,7 +9,6 @@ import Footer from "../components/footer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { upload } from "@vercel/blob/client";
 import { v4 as uuidv4 } from "uuid";
 import {
   Form,
