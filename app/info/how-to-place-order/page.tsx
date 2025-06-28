@@ -27,7 +27,7 @@ export default function HowToPlaceOrder() {
           <li>You can place your order send message through FB page to book your order. You can also whatsapp us on <a href="https://wa.me/16892678636" className="text-blue-600 hover:underline">+16892678636</a></li>
           <li>Payment can be done via Zelle/Venmo.</li>
           <li>Once payment is received, customer will get a confirmation email.</li>
-          <li>Product (pre-order) will be shipped. So, please consider 8-10 days for the product to be dispatched. (If customer opts for the stitching option, this time may slightly increase) and the same will be updated to the customer.</li>
+          <li>Product (pre-order) will be shipped approx 15 days after placing order, so please consider 3-4 weeks for delivery. (If customer opts for the stitching option, this time may slightly increase) and the same will be updated to the customer.</li>
           <li>It will take 3-4 weeks from the date of purchase for delivery.</li>
         </ul>
         <p className="mb-4">
