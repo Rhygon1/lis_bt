@@ -41,7 +41,7 @@ export default async function getProducts(
     }
   }
   if (search){
-    res = res.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+    res = res.or(`title.ilike.%${search}%,description.ilike.%${search}%,dispatch.ilike.%${search}%,type.ilike.%${search}%`);
   }
   
   const pageLength = 7;
