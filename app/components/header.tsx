@@ -49,7 +49,7 @@ export default function Header(props: propsType) {
           }
         ></AppSidebar>
       </div>
-      <Link prefetch={true} href="/" className="w-1/3">
+      <Link href="/" className="w-1/3">
         <p className="font-[Overpass] font-bold text-nowrap">LIS BOUTIQUE</p>
       </Link>
       <div className="flex w-1/3 justify-end gap-2 items-center">

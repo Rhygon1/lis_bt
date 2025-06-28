@@ -31,7 +31,7 @@ export default function AppSidebar(props: propsType) {
       </SheetTrigger>
       <SheetContent side="left">
         {user && customData.admin == true ? (
-          <Link prefetch={true} href="/admin" className="ml-4 mt-5">
+          <Link href="/admin" className="ml-4 mt-5">
             <Button>Make product</Button>
           </Link>
         ) : (
@@ -41,14 +41,14 @@ export default function AppSidebar(props: propsType) {
 
         <div className="ml-5 mt-2">
           <SheetClose asChild>
-            <Link prefetch={true} href="/info/how-to-place-order" className="text-sm underline">
+            <Link href="/info/how-to-place-order" className="text-sm underline">
               How to Place an Order
             </Link>
           </SheetClose>
         </div>
         <div className="ml-5">
           <SheetClose asChild>
-            <Link prefetch={true} href="/info/return-policy" className="text-sm underline">
+            <Link href="/info/return-policy" className="text-sm underline">
               Return Policy
             </Link>
           </SheetClose>
@@ -58,7 +58,7 @@ export default function AppSidebar(props: propsType) {
         </SheetHeader>
         <div key="all" className="ml-5">
           <SheetClose asChild>
-            <Link prefetch={true} href={`/search`}>
+            <Link href={`/search`}>
               All
             </Link>
           </SheetClose>

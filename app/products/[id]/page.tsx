@@ -272,12 +272,6 @@ export default function Page() {
                         <p>Estimated delivery time will vary based on your location.</p>
                       </AccordionContent>
                     </AccordionItem>
-                    <AccordionItem value="item-3">
-                      <AccordionTrigger>Return Policy</AccordionTrigger>
-                      <AccordionContent>
-                        <p>All items are non-refundable unless specified in the description.</p>
-                      </AccordionContent>
-                    </AccordionItem>
                   </Accordion>
                 ) : (
                   <>
@@ -289,12 +283,6 @@ export default function Page() {
                         <AccordionContent>
                           <p>Dispatch Time: {product.dispatch}</p>
                           <p>Estimated delivery time will vary based on your location.</p>
-                        </AccordionContent>
-                      </AccordionItem>
-                      <AccordionItem value="item-3">
-                        <AccordionTrigger>Return Policy</AccordionTrigger>
-                        <AccordionContent>
-                          <p>All items are non-refundable unless specified in the description.</p>
                         </AccordionContent>
                       </AccordionItem>
                     </Accordion>

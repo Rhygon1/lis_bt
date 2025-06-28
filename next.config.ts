@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
       "uploadthing.com",
       "dsd05nazui.ufs.sh"
     ],
+    formats: ["image/webp"],
+    minimumCacheTTL: 60,
   },
 };
 
