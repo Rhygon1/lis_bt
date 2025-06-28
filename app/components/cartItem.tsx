@@ -53,7 +53,7 @@ export default function CartItem({ product, size, quantity }: CartItemProps) {
           <Select
             defaultValue={size}
             onValueChange={(newSize) =>
-              updateCartItem(product.id, newSize, quantity)
+              updateCartItem(product.id, size, newSize, quantity)
             }
           >
             <SelectTrigger className="w-24 h-8 text-xs">
@@ -104,7 +104,7 @@ export default function CartItem({ product, size, quantity }: CartItemProps) {
             type="number"
             value={quantity}
             onChange={(e) =>
-              updateCartItem(product.id, size, parseInt(e.target.value))
+              updateCartItem(product.id, size, size, parseInt(e.target.value))
             }
             className="w-16 h-8 text-xs"
           />
@@ -113,7 +113,7 @@ export default function CartItem({ product, size, quantity }: CartItemProps) {
       <Button
         variant="destructive"
         size="icon"
-        onClick={() => removeFromCart(product.id)}
+        onClick={() => removeFromCart(product.id, size)}
       >
         <Trash className="w-4 h-4" />
       </Button>

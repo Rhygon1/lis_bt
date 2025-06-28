@@ -25,6 +25,7 @@ import Image from "next/image";
 type propsType = {
   updateProducts: () => Promise<void>;
   product: dataProductType;
+  priority: boolean
 };
 
 export default function ProductCard(props: propsType) {
@@ -53,6 +54,7 @@ export default function ProductCard(props: propsType) {
             src={props.product.media[0] as string}
             alt={props.product.title}
             fill
+            loading={props.priority ? "eager" : "lazy"}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             style={{ objectFit: "cover", objectPosition: "top" }}
           ></Image>
@@ -60,7 +62,7 @@ export default function ProductCard(props: propsType) {
             onClick={(e) => {
               e.preventDefault();
               if (wishlisted) {
-                removeFromCart(props.product.id);
+                removeFromCart(props.product.id, props.product.sizes[0]);
               } else {
                 addToCart(props.product, props.product.sizes[0], 1);
                 setIsCartOpen(true);

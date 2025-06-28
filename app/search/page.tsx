@@ -3,7 +3,8 @@ import Footer from "@/app/components/footer";
 import MainSearch from "@/app/components/mainSearch";
 import { Suspense } from "react";
 
-export default function Search() {
+export default async function Search({ searchParams }: { searchParams: { col?: string; search?: string } }) {
+  let params = await searchParams
   let collections = [
     "Readymade Suits",
     "Anarkalis",
@@ -22,7 +23,7 @@ export default function Search() {
     <div className="flex flex-col max-w-screen">
       <Header collections={collections}></Header>
       <Suspense>
-        <MainSearch />
+        <MainSearch searchParams={params} />
       </Suspense>
       <Footer></Footer>
     </div>

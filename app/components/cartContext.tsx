@@ -14,8 +14,8 @@ type CartItem = {
 type CartContextType = {
   cart: CartItem[];
   addToCart: (product: Product, size: string, quantity: number) => void;
-  removeFromCart: (productId: string) => void;
-  updateCartItem: (productId: string, size: string, quantity: number) => void;
+  removeFromCart: (productId: string, size: string) => void;
+  updateCartItem: (productId: string, oldSize: string, newSize: string, quantity: number) => void;
   isCartOpen: boolean;
   setIsCartOpen: (isOpen: boolean) => void;
 };
@@ -215,9 +215,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = (productId: string, size: string) => {
     setCart((prevCart) => {
-      const updatedCart = prevCart.filter((item) => item.product.id !== productId);
+      const updatedCart = prevCart.filter(
+        (item) => !(item.product.id === productId && item.size === size)
+      );
       if (user) {
         saveCartToDatabase(updatedCart);
       } else {
@@ -227,10 +229,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const updateCartItem = (productId: string, size: string, quantity: number) => {
+  const updateCartItem = (productId: string, oldSize: string, newSize: string, quantity: number) => {
     setCart((prevCart) => {
       const updatedCart = prevCart.map((item) =>
-        item.product.id === productId ? { ...item, size, quantity } : item
+        (item.product.id === productId && item.size === oldSize) ? { ...item, newSize, quantity } : item
       );
       if (user) {
         saveCartToDatabase(updatedCart);
