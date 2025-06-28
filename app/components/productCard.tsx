@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Heart, Trash } from "lucide-react";
 import { dataProductType } from "@/app/(data)/getProducts";
@@ -15,10 +15,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { delProduct } from "../(data)/delProduct";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { Currency } from "./currency";
 import { useUser } from "./auth-context";
 import Link from "next/link";
+import Image from "next/image";
 
 type propsType = {
   updateProducts: () => Promise<void>;
@@ -34,15 +35,27 @@ export default function ProductCard(props: propsType) {
     <div key={`${props.product.title}`} className="w-full aspect-3/5 mb-5">
       <Link href={`/products/${props.product.id}`}>
         <div className="basis-full shrink-0 aspect-2/3 relative">
-          <img
+          <div className="absolute top-3 left-0 z-10 bg-gray-100 text-xs px-2 py-1 rounded-r-full">
+            {props.product.dispatch === "Ready to be shipped!" ? "Ready to Ship" : "Preorder"}
+          </div>
+          <Image
             src={props.product.media[0] as string}
-            className="w-full h-full object-top object-cover"
-          ></img>
+            alt={props.product.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: "cover", objectPosition: "top" }}
+          ></Image>
           <button
-            onClick={(e) => {e.preventDefault(); setWishlisted((a) => !a)}}
+            onClick={(e) => {
+              e.preventDefault();
+              setWishlisted((a) => !a);
+            }}
             className="absolute top-3 right-3 rounded-full bg-white w-7 h-7 flex items-center justify-center"
           >
-            <Heart fill={wishlisted ? "black" : "white"} className="w-4"></Heart>
+            <Heart
+              fill={wishlisted ? "black" : "white"}
+              className="w-4"
+            ></Heart>
           </button>
         </div>
         <div className="flex justify-between mt-2">
@@ -76,7 +89,7 @@ export default function ProductCard(props: propsType) {
                 className="w-2/5"
                 onClick={async () => {
                   await delProduct(props.product.id);
-                  await props.updateProducts()
+                  await props.updateProducts();
                 }}
                 variant="destructive"
               >

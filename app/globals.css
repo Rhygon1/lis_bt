@@ -178,7 +178,7 @@ body {
 }
 
 .embla__slide--thumb {
-  flex: 0 0 24%;
+  flex: 0 0 auto;
   min-width: 0;
   cursor: pointer;
   opacity: 0.5;

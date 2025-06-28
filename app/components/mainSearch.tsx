@@ -7,6 +7,8 @@ import { SelectDemo } from "./sortByCombobox";
 import { dataProductType } from "@/app/(data)/getProducts";
 import ProductCard from "./productCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 type ProductsType = [dataProductType[], number];
 
@@ -20,6 +22,8 @@ export default function MainSearch() {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
+  const [showInStockOnly, setShowInStockOnly] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState<dataProductType[]>([]);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastProductRef = useCallback(
@@ -73,23 +77,44 @@ export default function MainSearch() {
     fetchProducts(page);
   }, [page]);
 
+  useEffect(() => {
+    setFilteredProducts(() => {
+      return productsData.filter(p => !showInStockOnly || p.inStock)
+    })  
+  }, [productsData, showInStockOnly])
+
   return (
     <div className="flex flex-col max-w-screen mx-5 mt-6">
       <div className="flex justify-between items-center">
         <p className="text-xs text-slate-800">
           {collection && `${collection}    |    `} {`${totalCount}`} Results
         </p>
-        <SelectDemo
-          selectedSort={selectedSort}
-          setSelectedSort={setSelectedSort}
-        />
+        <div className="flex items-center space-x-4">
+          <SelectDemo
+            selectedSort={selectedSort}
+            setSelectedSort={setSelectedSort}
+          />
+        </div>
       </div>
 
-      {search && <p className="w-full h-8 mt-7 flex justify-center items-center text-2xl font-[Overpass] font-thin">Search results for "{search}"</p>}
+      <div className="flex justify-end py-3 w-full items-center space-x-2">
+        <Switch
+          id="in-stock-only"
+          checked={showInStockOnly}
+          onCheckedChange={setShowInStockOnly}
+        />
+        <Label htmlFor="in-stock-only">In Stock Only</Label>
+      </div>
+
+      {search && (
+        <p className="w-full h-8 mt-7 flex justify-center items-center text-2xl font-[Overpass] font-thin">
+          Search results for "{search}"
+        </p>
+      )}
 
       <div className="grid grid-cols-2 row-auto gap-1 lg:grid-cols-4 md:gap-3 mb-10 mt-8">
-        {productsData.map((product, idx) => {
-          if (idx === productsData.length - 1) {
+        {filteredProducts.map((product, idx) => {
+          if (idx === filteredProducts.length - 1) {
             return (
               <div ref={lastProductRef} key={product.id}>
                 <ProductCard

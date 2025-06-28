@@ -149,14 +149,14 @@ export default function Main() {
     let imageFiles: File[] = [];
     let videoFiles: File[] = [];
 
-    await Promise.all(values.media.map(async (file) => {
+    values.media.map(async (file) => {
       if (!file.type.startsWith("video/")) {
         const { webpBlob, fileName } = await webpfy({ image: file });
         imageFiles.push(new File([webpBlob], fileName, { type: "image/webp" }));
       } else {
         videoFiles.push(file);
       }
-    }));
+    });
 
     let imageResponses = await uploadFiles("imageUploader", {
       files: imageFiles,
