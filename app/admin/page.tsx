@@ -149,24 +149,24 @@ export default function Main() {
     let imageFiles: File[] = [];
     let videoFiles: File[] = [];
 
-    values.media.map(async (file) => {
+    for (const file of values.media) {
       if (!file.type.startsWith("video/")) {
         const { webpBlob, fileName } = await webpfy({ image: file });
         imageFiles.push(new File([webpBlob], fileName, { type: "image/webp" }));
       } else {
         videoFiles.push(file);
       }
-    });
-
+    }
+    console.log(imageFiles, videoFiles);
     let imageResponses = await uploadFiles("imageUploader", {
       files: imageFiles,
     });
-    let imageUrls = imageResponses.map(a => a.ufsUrl)
+    let imageUrls = imageResponses.map((a) => a.ufsUrl);
     const videoResponses = await uploadFiles("videoUploader", {
-      files: videoFiles
-    })
-    let videoUrls = videoResponses.map(a => a.ufsUrl)
-    let urls = [...imageUrls, ...videoUrls]
+      files: videoFiles,
+    });
+    let videoUrls = videoResponses.map((a) => a.ufsUrl);
+    let urls = [...imageUrls, ...videoUrls];
 
     let newProduct = {
       title: values.title,
