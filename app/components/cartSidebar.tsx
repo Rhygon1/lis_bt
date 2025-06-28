@@ -29,6 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { PhoneInput } from "@/app/components/phone-input";
+import Link from "next/link";
 
 const formSchema = z.object({
   customerPhone: z
@@ -138,7 +139,8 @@ export default function CartSidebar() {
         </SheetHeader>
         {!user && (
           <p className="text-sm bg-yellow-100 text-gray-700 p-3 mx-4 rounded-md mb-4">
-            Your cart changes will not be saved unless you log in.
+            Your cart changes will not be saved and you will not be able to
+            order further unless you <Link className="text-blue font-thin" href="/login">log in</Link>.
           </p>
         )}
         <div className="flex-1 overflow-y-auto px-4">
@@ -166,10 +168,17 @@ export default function CartSidebar() {
             >
               {queryStatus.type === "success" ? (
                 <>
-                  <p>{queryStatus.message}. Please check your email for details.</p>
+                  <p>
+                    {queryStatus.message}. Please check your email for details.
+                  </p>
                   <p>To move forward with your order, please contact us via:</p>
                   <p>
-                    <a href="https://wa.me/16892678636" target="_blank" rel="noopener noreferrer" className="underline">
+                    <a
+                      href="https://wa.me/16892678636"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                    >
                       +1 (689) 267-8636 (WhatsApp)
                     </a>
                   </p>

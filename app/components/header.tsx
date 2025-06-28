@@ -70,7 +70,7 @@ export default function Header(props: propsType) {
                   disabled={isSigningOut}
                 >
                   <LogOut className="ml-1" color="black" />
-                  <p>{isSigningOut ? "Signing out..." : "Sign Out"}</p>
+                  <p className="font-medium h-full text-center flex items-center">{isSigningOut ? "Signing out..." : "Sign Out"}</p>
                 </Button>
               </div>
             </PopoverContent>
