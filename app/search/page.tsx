@@ -3,8 +3,11 @@ import Footer from "@/app/components/footer";
 import MainSearch from "@/app/components/mainSearch";
 import { Suspense } from "react";
 
-export default async function Search({ searchParams }: { searchParams: { col?: string; search?: string } }) {
-  let params = await searchParams
+export type ParamsType = Promise<{ col?: string; search?: string }>;
+type Props = { searchParams: ParamsType };
+
+export default async function Search({ searchParams }: Props) {
+  const params = await searchParams;
   let collections = [
     "Readymade Suits",
     "Anarkalis",

@@ -3,10 +3,14 @@ import Footer from "@/app/components/footer";
 import Header from "@/app/components/header";
 import ProductDetailsClient from "./ProductDetailsClient";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  let {id} = await params
-  const product = await getProductById(id);
+export type ParamsType = Promise<{ id: string }>;
+type Props = { params: ParamsType };
 
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+  const product = await getProductById(id);
+  
+  // Rest of your existing code...
   const cols = [
     "Readymade Suits",
     "Anarkalis",
