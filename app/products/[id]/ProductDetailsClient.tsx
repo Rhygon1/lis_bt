@@ -212,7 +212,7 @@ export default function ProductDetailsClient({ product: initialProduct }: Produc
                           "11-12 years",
                           "12-13 years",
                           "13-14 years",
-                          "14-15 years",
+                          "14-15 years", "One Size"
                         ].filter(size => product.sizes.includes(size)).map((size) => (
                           <ToggleGroupItem
                             key={size}
