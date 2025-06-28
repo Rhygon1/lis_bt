@@ -5,6 +5,7 @@ import AppSidebar from "./components/sidebar";
 
 import "./globals.css";
 import CurrencyLayout from "./currencyContext";
+import { CartProvider } from "./components/cartContext";
 import { AuthProvider } from "./components/auth-context";
 
 const geistSans = Geist({
@@ -32,7 +33,9 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <CurrencyLayout>{children}</CurrencyLayout>
+          <CartProvider>
+            <CurrencyLayout>{children}</CurrencyLayout>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

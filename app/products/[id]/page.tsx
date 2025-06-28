@@ -31,6 +31,7 @@ import { Input } from "@/components/ui/input";
 import { useUser } from "@/app/components/auth-context";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useCart } from "@/app/components/cartContext";
 import { updateProduct } from "@/app/(data)/updateProduct";
 
 export default function Page() {
@@ -44,6 +45,7 @@ export default function Page() {
   const MOBILE_BREAKPOINT = 768
   const params = useParams();
   const { user, customData } = useUser();
+  const { addToCart, setIsCartOpen } = useCart();
   const cols = [
     "Readymade Suits",
     "Anarkalis",
@@ -125,7 +127,10 @@ export default function Page() {
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    if (product) {
+      addToCart(product, values.size, values.quantity);
+      setIsCartOpen(true);
+    }
   };
 
   if (!product) {
@@ -309,7 +314,7 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" variant="outline" className="flex-1">Add to Cart</Button>
+                  <Button type="submit" variant="default" className="flex-1">Add to Wishlist</Button>
                 </div>
               </form>
             </Form>

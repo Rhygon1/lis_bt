@@ -57,6 +57,7 @@
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^19",
     "@types/react-select-country-list": "^2.2.3",
+    "supabase": "^2.26.9",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"

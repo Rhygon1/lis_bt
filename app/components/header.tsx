@@ -17,6 +17,7 @@ import CustomAvatar from "./avatar";
 import { Button } from "@/components/ui/button";
 import { signout } from "@/utils/supabase/auth-actions";
 import { useRouter } from "next/navigation";
+import CartSidebar from "./cartSidebar";
 
 type propsType = {
   collections: string[];
@@ -79,7 +80,7 @@ export default function Header(props: propsType) {
             <User></User>
           </button>
         )}
-        <Heart className=""></Heart>
+        <CartSidebar />
       </div>
     </header>
   );

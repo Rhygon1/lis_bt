@@ -2,7 +2,7 @@
 
 import { Heart, Trash } from "lucide-react";
 import { dataProductType } from "@/app/(data)/getProducts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,6 +18,7 @@ import { delProduct } from "../(data)/delProduct";
 import { useRouter } from "next/navigation";
 import { Currency } from "./currency";
 import { useUser } from "./auth-context";
+import { useCart } from "./cartContext";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -28,15 +29,25 @@ type propsType = {
 
 export default function ProductCard(props: propsType) {
   const { user, customData } = useUser();
-  let [wishlisted, setWishlisted] = useState(false);
-  const router = useRouter();
+  const { addToCart, removeFromCart, cart, setIsCartOpen } = useCart();
+  let [wishlisted, setWishlisted] = useState(
+    cart.filter(p => p.product.id == props.product.id).length > 0
+  );
+
+  useEffect(() => {
+    setWishlisted(() => {
+      return cart.filter(p => p.product.id == props.product.id).length > 0
+    })
+  }, [cart])
 
   return (
     <div key={`${props.product.title}`} className="w-full aspect-3/5 mb-5">
       <Link href={`/products/${props.product.id}`}>
         <div className="basis-full shrink-0 aspect-2/3 relative">
           <div className="absolute top-3 left-0 z-10 bg-gray-100 text-xs px-2 py-1 rounded-r-full">
-            {props.product.dispatch === "Ready to be shipped!" ? "Ready to Ship" : "Preorder"}
+            {props.product.dispatch === "Ready to be shipped!"
+              ? "Ready to Ship"
+              : "Preorder"}
           </div>
           <Image
             src={props.product.media[0] as string}
@@ -48,7 +59,12 @@ export default function ProductCard(props: propsType) {
           <button
             onClick={(e) => {
               e.preventDefault();
-              setWishlisted((a) => !a);
+              if (wishlisted) {
+                removeFromCart(props.product.id);
+              } else {
+                addToCart(props.product, props.product.sizes[0], 1);
+                setIsCartOpen(true);
+              }
             }}
             className="absolute top-3 right-3 rounded-full bg-white w-7 h-7 flex items-center justify-center"
           >
