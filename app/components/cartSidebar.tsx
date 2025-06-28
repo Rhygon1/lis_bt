@@ -7,7 +7,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Heart } from "lucide-react";
+import { Heart, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "./cartContext";
 import { useUser } from "./auth-context";
@@ -140,7 +140,7 @@ export default function CartSidebar() {
         {!user && (
           <p className="text-sm bg-yellow-100 text-gray-700 p-3 mx-4 rounded-md mb-4">
             Your cart changes will not be saved and you will not be able to
-            order further unless you <Link className="text-blue font-thin" href="/login">log in</Link>.
+            order further unless you <Link className="text-blue font-thin underline" href="/login">log in</Link>.
           </p>
         )}
         <div className="flex-1 overflow-y-auto px-4">
@@ -171,22 +171,29 @@ export default function CartSidebar() {
                   <p>
                     {queryStatus.message}. Please check your email for details.
                   </p>
-                  <p>To move forward with your order, please contact us via:</p>
-                  <p>
+                  <p className="mt-2">To move forward with your order, please contact us via:</p>
+                  <div className="flex flex-col space-y-2 mt-2">
                     <a
                       href="https://wa.me/16892678636"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline"
+                      className="flex items-center text-green-700 hover:underline"
                     >
+                      <img src="https://static.vecteezy.com/system/resources/previews/021/495/946/non_2x/whatsapp-logo-icon-free-png.png" alt="WhatsApp" className="h-5 w-5 mr-2" />
                       +1 (689) 267-8636 (WhatsApp)
                     </a>
-                  </p>
-                  <p>
-                    <a href="tel:+16892678636" className="underline">
+                    <a
+                      href="mailto:lisboutique06@gmail.com"
+                      className="flex items-center text-blue-700 hover:underline"
+                    >
+                      <Mail className="h-5 w-5 mr-2" />
+                      lisboutique06@gmail.com (Email)
+                    </a>
+                    <a href="tel:+16892678636" className="flex items-center text-gray-700 hover:underline">
+                      <Phone className="h-5 w-5 mr-2" />
                       +1 (689) 267-8636 (Call)
                     </a>
-                  </p>
+                  </div>
                 </>
               ) : (
                 <p>{queryStatus.message}</p>

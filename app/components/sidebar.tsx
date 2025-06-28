@@ -23,14 +23,14 @@ type propsType = {
 
 export default function AppSidebar(props: propsType) {
   const { user, customData } = useUser();
-  
+
   return (
     <Sheet>
       <SheetTrigger>
         <Menu className="flex justify-start"></Menu>
       </SheetTrigger>
       <SheetContent side="left">
-        {(user && customData.admin == true) ? (
+        {user && customData.admin == true ? (
           <Link prefetch={true} href="/admin" className="ml-4 mt-5">
             <Button>Make product</Button>
           </Link>
@@ -38,12 +38,29 @@ export default function AppSidebar(props: propsType) {
           <div className="mt-5"></div>
         )}
         <CountrySelector></CountrySelector>
+
+        <div className="ml-5 mt-2">
+          <SheetClose asChild>
+            <Link prefetch={true} href="/info/how-to-place-order" className="text-sm underline">
+              How to Place an Order
+            </Link>
+          </SheetClose>
+        </div>
+        <div className="ml-5">
+          <SheetClose asChild>
+            <Link prefetch={true} href="/info/return-policy" className="text-sm underline">
+              Return Policy
+            </Link>
+          </SheetClose>
+        </div>
         <SheetHeader>
           <SheetTitle>Categories</SheetTitle>
         </SheetHeader>
         <div key="all" className="ml-5">
           <SheetClose asChild>
-            <Link prefetch={true} href={`/search`}>All</Link>
+            <Link prefetch={true} href={`/search`}>
+              All
+            </Link>
           </SheetClose>
           <Separator className="my-2 mr-5 text-black" />
         </div>
@@ -51,7 +68,8 @@ export default function AppSidebar(props: propsType) {
           return (
             <div key={`${a}`} className="ml-5">
               <SheetClose asChild>
-                <Link prefetch={true}
+                <Link
+                  prefetch={true}
                   href={`/search?col=${encodeURIComponent(a as string)}`}
                 >{`${a}`}</Link>
               </SheetClose>

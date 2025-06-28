@@ -37,6 +37,23 @@ export default async function RootLayout({
             <CurrencyLayout>{children}</CurrencyLayout>
           </CartProvider>
         </AuthProvider>
+        <div className="fixed bottom-4 right-4 z-50">
+          <a
+            href="https://wa.me/16892678636"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center rounded-full shadow-lg bg-white text-black p-2 pr-4"
+          >
+            <div className="bg-green-500 rounded-full p-2 flex items-center justify-center">
+              <img
+                src="https://static.vecteezy.com/system/resources/previews/021/495/946/non_2x/whatsapp-logo-icon-free-png.png"
+                alt="WhatsApp"
+                className="h-5 w-5"
+              />
+            </div>
+            <span className="ml-2 text-sm font-medium">Chat with us</span>
+          </a>
+        </div>
       </body>
     </html>
   );

@@ -35,7 +35,7 @@ export async function sendQuery({
   exchangeRate
 }: SendQueryProps) {
   const orderId = Math.floor(100000 + Math.random() * 900000).toString();
-  
+  // return { success: true, orderId: orderId };
   try {
     // Send email to customer
     const customerEmailResponse = await resend.emails.send({

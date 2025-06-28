@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import CartSidebar from "./cartSidebar";
 
 type propsType = {
-  collections: string[];
+  collections?: string[];
 };
 
 export default function Header(props: propsType) {
@@ -31,7 +31,23 @@ export default function Header(props: propsType) {
   return (
     <header className="flex justify-between items-center p-4 gap-4 h-16">
       <div className="w-1/3">
-        <AppSidebar collections={props.collections}></AppSidebar>
+        <AppSidebar
+          collections={
+            props.collections || [
+              "Readymade Suits",
+              "Anarkalis",
+              "Gowns",
+              "Lehangas",
+              "Menswear",
+              "Girls Kids Dresses",
+              "Boys Kids Dresses",
+              "Jewellery",
+              "Sarees",
+              "Blouses",
+              "Indo Western",
+            ]
+          }
+        ></AppSidebar>
       </div>
       <Link prefetch={true} href="/" className="w-1/3">
         <p className="font-[Overpass] font-bold text-nowrap">LIS BOUTIQUE</p>
@@ -70,7 +86,9 @@ export default function Header(props: propsType) {
                   disabled={isSigningOut}
                 >
                   <LogOut className="ml-1" color="black" />
-                  <p className="font-medium h-full text-center flex items-center">{isSigningOut ? "Signing out..." : "Sign Out"}</p>
+                  <p className="font-medium h-full text-center flex items-center">
+                    {isSigningOut ? "Signing out..." : "Sign Out"}
+                  </p>
                 </Button>
               </div>
             </PopoverContent>
