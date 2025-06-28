@@ -101,7 +101,7 @@ export default function Page() {
         form.setValue("size", initialSize);
         if (initialSize.toLowerCase() === "unstitched") {
           setPrice(fetchedProduct.unstitchPrice);
-        } else if (initialSize.toLowerCase() === "custom") {
+        } else if (initialSize.toLowerCase() === "customized") {
           setPrice(fetchedProduct.customPrice);
         } else {
           setPrice(fetchedProduct.price);

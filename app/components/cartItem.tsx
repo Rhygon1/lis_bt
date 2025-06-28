@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useCart } from "./cartContext";
+import { useEffect, useState } from "react";
+import { Currency } from "./currency";
 
 type CartItemProps = {
   product: Product;
@@ -21,6 +23,17 @@ type CartItemProps = {
 
 export default function CartItem({ product, size, quantity }: CartItemProps) {
   const { removeFromCart, updateCartItem } = useCart();
+  const [price, setPrice] = useState(0);
+
+  useEffect(() => {
+    if (size.toLowerCase() === "unstitched") {
+      setPrice(product.unstitchPrice);
+    } else if (size.toLowerCase() === "customized") {
+      setPrice(product.customPrice);
+    } else {
+      setPrice(product.price);
+    }
+  }, [size]);
 
   return (
     <div className="flex items-center gap-4 p-4 border-b">
@@ -35,6 +48,7 @@ export default function CartItem({ product, size, quantity }: CartItemProps) {
       </div>
       <div className="flex-1 flex flex-col gap-2">
         <p className="text-sm font-medium">{product.title}</p>
+        <Currency price={price}></Currency>
         <div className="flex items-center gap-2">
           <Select
             defaultValue={size}
