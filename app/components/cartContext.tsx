@@ -191,14 +191,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     loadAndMergeCart();
   }, [user, customData.cart, getLocalCart, saveCartToDatabase]); // Depend on user and customData.cart
 
-  // Effect to save cart to database or local storage whenever it changes
-  useEffect(() => {
-    if (user) {
-      saveCartToDatabase(cart);
-    } else {
-      saveLocalCart(cart);
-    }
-  }, [cart, user, saveCartToDatabase, saveLocalCart]);
+  
 
   const addToCart = (product: Product, size: string, quantity: number) => {
     setCart((prevCart) => {
@@ -206,26 +199,46 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         (item) => item.product.id === product.id && item.size === size
       );
 
+      let updatedCart;
       if (existingItemIndex !== -1) {
-        const updatedCart = [...prevCart];
+        updatedCart = [...prevCart];
         updatedCart[existingItemIndex].quantity = quantity;
-        return updatedCart;
       } else {
-        return [...prevCart, { product, size, quantity }];
+        updatedCart = [...prevCart, { product, size, quantity }];
       }
+      if (user) {
+        saveCartToDatabase(updatedCart);
+      } else {
+        saveLocalCart(updatedCart);
+      }
+      return updatedCart;
     });
   };
 
   const removeFromCart = (productId: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
+    setCart((prevCart) => {
+      const updatedCart = prevCart.filter((item) => item.product.id !== productId);
+      if (user) {
+        saveCartToDatabase(updatedCart);
+      } else {
+        saveLocalCart(updatedCart);
+      }
+      return updatedCart;
+    });
   };
 
   const updateCartItem = (productId: string, size: string, quantity: number) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
+    setCart((prevCart) => {
+      const updatedCart = prevCart.map((item) =>
         item.product.id === productId ? { ...item, size, quantity } : item
-      )
-    );
+      );
+      if (user) {
+        saveCartToDatabase(updatedCart);
+      } else {
+        saveLocalCart(updatedCart);
+      }
+      return updatedCart;
+    });
   };
 
   return (
