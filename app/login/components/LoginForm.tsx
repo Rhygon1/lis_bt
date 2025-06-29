@@ -16,6 +16,7 @@ import GoogleButton from "./SignWithGoogle";
 import { login } from "@/utils/supabase/auth-actions";
 import { useUser } from "@/app/components/auth-context";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export function LoginForm({
   className,
@@ -60,12 +61,12 @@ export function LoginForm({
                 <div className="grid gap-3">
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
-                    {/* <a
-                      href="#"
+                    <Link
+                      href="/reset-password"
                       className="ml-auto text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?
-                    </a> */}
+                    </Link>
                   </div>
                   <Input
                     id="password"

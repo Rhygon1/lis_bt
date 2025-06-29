@@ -16,6 +16,7 @@ type AuthContextType = {
   customData: customDataType;
   refetch: () => Promise<void>;
   isCustomDataLoading: boolean;
+  isUserLoading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,9 +31,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     cart: [],
   });
   const [isCustomDataLoading, setIsCustomDataLoading] = useState(true);
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
   async function refetch() {
     setIsCustomDataLoading(true);
+    setIsUserLoading(true);
     try {
       // Get initial session
       const {
@@ -40,6 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } = await supabase.auth.getSession();
       setSession(initialSession);
       setUser(initialSession?.user ?? null);
+      setIsUserLoading(false);
 
       if (initialSession?.user) {
         await fetchProfileData(initialSession.user.id);
@@ -59,20 +63,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     refetch();
     // const initializeAuth = async () => {
     //   // Subscribe to auth changes
-    //   const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
+    // const { data } = supabase.auth.onAuthStateChange(
+    //   async (event, newSession) => {
     //     setSession(newSession);
     //     setUser(newSession?.user ?? null);
+    //     setIsUserLoading(false);
 
     //     if (newSession?.user) {
-    //       fetchProfileData(newSession.user.id);
+    //       await fetchProfileData(newSession.user.id);
     //     } else {
-    //       setCustomData({ admin: false, fullName: "" });
+    //       setCustomData({ admin: false, fullName: "", cart: [] });
     //     }
-    //   });
+    //     //     setSession(newSession);
+    //     //     setUser(newSession?.user ?? null);
 
-    //   return () => {
-    //     data.subscription.unsubscribe();
-    //   };
+    //     //     if (newSession?.user) {
+    //     //       fetchProfileData(newSession.user.id);
+    //     //     } else {
+    //     //       setCustomData({ admin: false, fullName: "" });
+    //     //     }
+    //     //   });
+    //   }
+    // );
+
+    // return () => {
+    //   data.subscription.unsubscribe();
     // };
 
     // initializeAuth();
@@ -107,7 +122,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, customData, refetch, isCustomDataLoading }}>
+    <AuthContext.Provider
+      value={{
+        isUserLoading,
+        session,
+        user,
+        customData,
+        refetch,
+        isCustomDataLoading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

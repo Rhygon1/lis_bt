@@ -8,6 +8,7 @@ import { useUser } from "./auth-context";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import ScrollingBanner from "./ScrollingBanner";
 import {
   Popover,
   PopoverContent,
@@ -29,78 +30,87 @@ export default function Header(props: propsType) {
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   return (
-    <header className="flex justify-between items-center p-4 gap-4 h-16">
-      <div className="w-1/3">
-        <AppSidebar
-          collections={
-            props.collections || [
-              "Readymade Suits",
-              "Anarkalis",
-              "Gowns",
-              "Lehangas",
-              "Menswear",
-              "Girls Kids Dresses",
-              "Boys Kids Dresses",
-              "Jewellery",
-              "Sarees",
-              "Blouses",
-              "Indo Western",
-            ]
-          }
-        ></AppSidebar>
-      </div>
-      <Link href="/" className="w-1/3">
-        <p className="font-[Overpass] font-bold text-nowrap">LIS BOUTIQUE</p>
-      </Link>
-      <div className="flex w-1/3 justify-end gap-2 items-center">
-        <SearchBar></SearchBar>
-        {user ? (
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="w-fit h-fit">
-                <CustomAvatar></CustomAvatar>
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="p-0 mr-10">
-              <div className="w-full flex flex-col gap-0">
-                <div className="w-full py-3 ml-2 flex items-center gap-3">
-                  <div>
-                    <CustomAvatar />
+    <>
+      <ScrollingBanner></ScrollingBanner>
+      <header className="flex justify-between items-center p-4 gap-4 h-12">
+        <div className="flex-1">
+          <AppSidebar
+            collections={
+              props.collections || [
+                "Readymade Suits",
+                "Anarkalis",
+                "Gowns",
+                "Lehangas",
+                "Menswear",
+                "Girls Kids Dresses",
+                "Boys Kids Dresses",
+                "Jewellery",
+                "Sarees",
+                "Blouses",
+                "Indo Western",
+              ]
+            }
+          ></AppSidebar>
+        </div>
+        <Link href="/" className="flex-1 text-center">
+          <p className="font-[Overpass] font-bold text-nowrap md:text-lg">
+            LIS BOUTIQUE
+          </p>
+        </Link>
+        <div className="flex flex-1 justify-end gap-2 items-center">
+          <SearchBar></SearchBar>
+          {user ? (
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="w-fit h-fit">
+                  <CustomAvatar></CustomAvatar>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="p-0 mr-10">
+                <div className="w-full flex flex-col gap-0">
+                  <div className="w-full py-3 ml-2 flex items-center gap-3">
+                    <div>
+                      <CustomAvatar />
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      {customData.fullName && (
+                        <p className="text-left text-sm">
+                          {customData.fullName}
+                        </p>
+                      )}
+                      <p className="text-left font-thin text-sm">
+                        {user.email}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-col justify-center">
-                    {customData.fullName && (
-                      <p className="text-left text-sm">{customData.fullName}</p>
-                    )}
-                    <p className="text-left font-thin text-sm">{user.email}</p>
-                  </div>
+                  <Button
+                    variant="secondary"
+                    className="bg-white py-6 w-full font-thin flex justify-start gap-4"
+                    onClick={async () => {
+                      setIsSigningOut(true);
+                      await signout();
+                      await refetch();
+                      setIsSigningOut(false);
+                    }}
+                    disabled={isSigningOut}
+                  >
+                    <LogOut className="ml-1" color="black" />
+                    <p className="font-medium h-full text-center flex items-center">
+                      {isSigningOut ? "Signing out..." : "Sign Out"}
+                    </p>
+                  </Button>
                 </div>
-                <Button
-                  variant="secondary"
-                  className="bg-white py-6 w-full font-thin flex justify-start gap-4"
-                  onClick={async () => {
-                    setIsSigningOut(true);
-                    await signout();
-                    await refetch();
-                    setIsSigningOut(false);
-                  }}
-                  disabled={isSigningOut}
-                >
-                  <LogOut className="ml-1" color="black" />
-                  <p className="font-medium h-full text-center flex items-center">
-                    {isSigningOut ? "Signing out..." : "Sign Out"}
-                  </p>
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
-        ) : (
-          <button onClick={() => router.push("/login")}>
-            <User></User>
-          </button>
-        )}
-        <CartSidebar />
-      </div>
-    </header>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <button onClick={() => router.push("/login")}>
+              <User></User>
+            </button>
+          )}
+          <CartSidebar />
+        </div>
+      </header>
+    </>
   );
 }
 

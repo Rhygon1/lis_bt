@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-import { LoginForm } from "./components/LoginForm";
+import { UpdatePasswordForm } from "./components/UpdatePasswordForm";
 
-export default function LoginPage() {
+export default async function UpdatePasswordPage({searchParams} : any) {
+  const params = await searchParams
+  const err = params.error_description
+
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <Link href="/" className="flex flex-col items-center gap-2">
@@ -12,7 +15,7 @@ export default function LoginPage() {
       </Link>
       <div className="flex w-full max-w-sm flex-col gap-6">
         <Suspense>
-          <LoginForm />
+          <UpdatePasswordForm err={err}/>
         </Suspense>
       </div>
     </div>

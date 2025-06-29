@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-import { LoginForm } from "./components/LoginForm";
+import { ResetPasswordForm } from "./components/ResetPasswordForm";
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <Link href="/" className="flex flex-col items-center gap-2">
@@ -12,7 +12,7 @@ export default function LoginPage() {
       </Link>
       <div className="flex w-full max-w-sm flex-col gap-6">
         <Suspense>
-          <LoginForm />
+          <ResetPasswordForm />
         </Suspense>
       </div>
     </div>
