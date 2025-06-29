@@ -1,6 +1,12 @@
 "use client";
 import { dataProductType as Product } from "@/app/(data)/getProducts";
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { useUser } from "./auth-context";
 import getProductById from "@/app/(data)/getProductById";
 import { createClient } from "@/utils/supabase/client";
@@ -15,7 +21,12 @@ type CartContextType = {
   cart: CartItem[];
   addToCart: (product: Product, size: string, quantity: number) => void;
   removeFromCart: (productId: string, size: string) => void;
-  updateCartItem: (productId: string, oldSize: string, newSize: string, quantity: number) => void;
+  updateCartItem: (
+    productId: string,
+    oldSize: string,
+    newSize: string,
+    quantity: number
+  ) => void;
   isCartOpen: boolean;
   setIsCartOpen: (isOpen: boolean) => void;
 };
@@ -42,32 +53,40 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   // Helper to save cart to local storage
   const saveLocalCart = useCallback((currentCart: CartItem[]) => {
     if (typeof window !== "undefined") {
-      localStorage.setItem(LOCAL_STORAGE_CART_KEY, JSON.stringify(currentCart.map(item => ({
-        productId: item.product.id,
-        size: item.size,
-        quantity: item.quantity,
-      }))));
+      localStorage.setItem(
+        LOCAL_STORAGE_CART_KEY,
+        JSON.stringify(
+          currentCart.map((item) => ({
+            productId: item.product.id,
+            size: item.size,
+            quantity: item.quantity,
+          }))
+        )
+      );
     }
   }, []);
 
   // Function to save the current cart to the database
-  const saveCartToDatabase = useCallback(async (currentCart: CartItem[]) => {
-    if (user) {
-      const cartData = currentCart.map(item => ({
-        productId: item.product.id,
-        size: item.size,
-        quantity: item.quantity,
-      }));
-      const { error } = await supabase
-        .from("profiles")
-        .update({ cart: cartData })
-        .eq("id", user.id);
+  const saveCartToDatabase = useCallback(
+    async (currentCart: CartItem[]) => {
+      if (user) {
+        const cartData = currentCart.map((item) => ({
+          productId: item.product.id,
+          size: item.size,
+          quantity: item.quantity,
+        }));
+        const { error } = await supabase
+          .from("profiles")
+          .update({ cart: cartData })
+          .eq("id", user.id);
 
-      if (error) {
-        console.error("Error saving cart to database:", error);
+        if (error) {
+          console.error("Error saving cart to database:", error);
+        }
       }
-    }
-  }, [user, supabase]);
+    },
+    [user, supabase]
+  );
 
   // Effect to load and merge cart on user change
   useEffect(() => {
@@ -87,12 +106,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         // Collect all unique product IDs from both DB and local carts
         const allProductIds = new Set<string>();
         dbCartRaw.forEach((item: any) => {
-          if (item && typeof item === 'object' && 'productId' in item) {
+          if (item && typeof item === "object" && "productId" in item) {
             allProductIds.add(item.productId as string);
           }
         });
         localCartRaw.forEach((item: any) => {
-          if (item && typeof item === 'object' && 'productId' in item) {
+          if (item && typeof item === "object" && "productId" in item) {
             allProductIds.add(item.productId as string);
           }
         });
@@ -125,12 +144,18 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         const productMap = new Map<string, Product>();
-        products.forEach(p => productMap.set(p.id, p));
+        products.forEach((p) => productMap.set(p.id, p));
 
         const resolveCartItems = (rawCart: any[]) => {
           const resolvedItems: CartItem[] = [];
           rawCart.forEach((item: any) => {
-            if (item && typeof item === 'object' && 'productId' in item && 'size' in item && 'quantity' in item) {
+            if (
+              item &&
+              typeof item === "object" &&
+              "productId" in item &&
+              "size" in item &&
+              "quantity" in item
+            ) {
               const product = productMap.get(item.productId as string);
               if (product) {
                 resolvedItems.push({
@@ -153,7 +178,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         // Merge local cart items, prioritizing local quantities for existing items
         for (const localItem of localCartResolved) {
           const existingIndex = mergedCartItems.findIndex(
-            (dbItem) => dbItem.product.id === localItem.product.id && dbItem.size === localItem.size
+            (dbItem) =>
+              dbItem.product.id === localItem.product.id &&
+              dbItem.size === localItem.size
           );
 
           if (existingIndex !== -1) {
@@ -166,14 +193,19 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         setCart(mergedCartItems);
         saveCartToDatabase(mergedCartItems); // Save the merged cart to DB
         localStorage.removeItem(LOCAL_STORAGE_CART_KEY); // Clear local storage after merge
-
       } else {
         // User logged out or not logged in: Load cart from local storage
         const initialLocalCart = getLocalCart();
         const loadedLocalCartItems: CartItem[] = [];
 
         for (const item of initialLocalCart) {
-          if (item && typeof item === 'object' && 'productId' in item && 'size' in item && 'quantity' in item) {
+          if (
+            item &&
+            typeof item === "object" &&
+            "productId" in item &&
+            "size" in item &&
+            "quantity" in item
+          ) {
             const product = await getProductById(item.productId as string);
             if (product) {
               loadedLocalCartItems.push({
@@ -190,8 +222,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     loadAndMergeCart();
   }, [user, customData.cart, getLocalCart, saveCartToDatabase]); // Depend on user and customData.cart
-
-  
 
   const addToCart = (product: Product, size: string, quantity: number) => {
     setCart((prevCart) => {
@@ -229,11 +259,20 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const updateCartItem = (productId: string, oldSize: string, newSize: string, quantity: number) => {
+  const updateCartItem = (
+    productId: string,
+    oldSize: string,
+    newSize: string,
+    quantity: number
+  ) => {
     setCart((prevCart) => {
-      const updatedCart = prevCart.map((item) =>
-        (item.product.id === productId && item.size === oldSize) ? { ...item, newSize, quantity } : item
-      );
+      const updatedCart = prevCart.map((item) => {
+        if (item.product.id === productId && item.size === oldSize){
+          return {...item, size: newSize, quantity}
+        } else {
+          return item
+        }
+      });
       if (user) {
         saveCartToDatabase(updatedCart);
       } else {
@@ -244,7 +283,16 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCartItem, isCartOpen, setIsCartOpen }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateCartItem,
+        isCartOpen,
+        setIsCartOpen,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

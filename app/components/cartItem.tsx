@@ -51,7 +51,7 @@ export default function CartItem({ product, size, quantity }: CartItemProps) {
         <Currency price={price}></Currency>
         <div className="flex items-center gap-2">
           <Select
-            defaultValue={size}
+            value={size}
             onValueChange={(newSize) =>
               updateCartItem(product.id, size, newSize, quantity)
             }
