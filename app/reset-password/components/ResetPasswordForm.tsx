@@ -59,7 +59,7 @@ export function ResetPasswordForm({
                   id="email"
                   type="email"
                   name="email"
-                  placeholder="m@example.com"
+                  placeholder="email@example.com"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
