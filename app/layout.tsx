@@ -1,5 +1,6 @@
 import { type Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import {Analytics} from "@vercel/analytics/next";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import AppSidebar from "./components/sidebar";
 
@@ -34,7 +35,10 @@ export default async function RootLayout({
       >
         <AuthProvider>
           <CartProvider>
-            <CurrencyLayout>{children}</CurrencyLayout>
+            <CurrencyLayout>
+              <Analytics />
+              {children}
+              </CurrencyLayout>
           </CartProvider>
         </AuthProvider>
         <div className="fixed bottom-4 right-4 z-50">
