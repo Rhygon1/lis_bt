@@ -56,25 +56,20 @@ export default function AppSidebar(props: propsType) {
         <SheetHeader>
           <SheetTitle>Categories</SheetTitle>
         </SheetHeader>
-        <div key="all" className="ml-5">
+        <Link href="/search" key="all" className="ml-5">
           <SheetClose asChild>
-            <Link href={`/search`}>
-              All
-            </Link>
+            <p>All</p>
           </SheetClose>
           <Separator className="my-2 mr-5 text-black" />
-        </div>
+        </Link>
         {props.collections.map((a) => {
           return (
-            <div key={`${a}`} className="ml-5">
+            <Link href={`/search?col=${encodeURIComponent(a as string)}`} key={`${a}`} className="ml-5">
               <SheetClose asChild>
-                <Link
-                  prefetch={true}
-                  href={`/search?col=${encodeURIComponent(a as string)}`}
-                >{`${a}`}</Link>
+                <p>{a}</p>
               </SheetClose>
               <Separator className="my-2 mr-5 text-black" />
-            </div>
+            </Link>
           );
         })}
       </SheetContent>
