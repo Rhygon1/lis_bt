@@ -156,7 +156,7 @@ export default function ProductDetailsClient({ product: initialProduct }: Produc
               </div>
             )}
           </div>
-          <p className="text-sm text-gray-500 -mt-2 mb-4">Shipping will be calculated at final order time.</p>
+          <p className="text-sm text-blue-500 -mt-2 mb-4">Shipping will be calculated at final order time.</p>
           {updateMessage && (
             <div className={`text-sm ${updateMessage.type === 'success' ? 'text-green-500' : 'text-red-500'} mb-4`}>
               {updateMessage.message}
