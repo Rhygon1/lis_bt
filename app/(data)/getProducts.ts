@@ -44,7 +44,7 @@ export default async function getProducts(
     res = res.or(`title.ilike.%${search}%,description.ilike.%${search}%,dispatch.ilike.%${search}%,type.ilike.%${search}%`);
   }
   
-  const pageLength = 7;
+  const pageLength = 15;
   res = res.range(page * pageLength, page * pageLength + (pageLength - 1));
 
   const { data, count } = await res;
