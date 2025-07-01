@@ -100,7 +100,7 @@ export default function ProductGridClient({
   }, [productsData, showInStockOnly]);
 
   return (
-    <div className="flex flex-col max-w-screen mx-5 mt-6">
+    <div className="flex flex-col max-w-7xl mx-auto px-5 mt-6">
       <div className="flex justify-between items-center">
         <p className="text-xs text-slate-800">
           {collection && `${collection}    |    `} {`${totalCount}`} Results
@@ -113,7 +113,7 @@ export default function ProductGridClient({
         </div>
       </div>
 
-      <div className="flex justify-end py-3 w-full items-center space-x-2">
+      <div className="flex justify-start py-3 w-full items-center space-x-2">
         <Switch
           id="in-stock-only"
           checked={showInStockOnly}

@@ -115,14 +115,14 @@ export default function ProductDetailsClient({ product: initialProduct }: Produc
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="container mx-auto px-4 py-8 lg:px-16 lg:py-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
         <div>
           <ProductImageSlider slides={product.media} />
         </div>
         <div>
-          <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
-          <div className="flex items-center mb-4">
+          <h1 className="text-3xl lg:text-4xl font-bold mb-4 lg:mb-6">{product.title}</h1>
+          <div className="flex items-center mb-4 lg:mb-6">
             <Currency price={price}></Currency>
             {inStockStatus ? (
               <span className="text-green-500 ml-4">In Stock</span>
@@ -181,7 +181,7 @@ export default function ProductDetailsClient({ product: initialProduct }: Produc
                           handleSizeChange(value);
                           field.onChange(value);
                         }}
-                        className="flex flex-wrap gap-2 justify-start"
+                        className="flex flex-wrap gap-2 justify-start lg:gap-3"
                       >
                         {[
                           "Unstitched",
@@ -229,7 +229,7 @@ export default function ProductDetailsClient({ product: initialProduct }: Produc
                   </FormItem>
                 )}
               />
-              <div className="mb-4">
+              <div className="mb-4 lg:mb-6">
                 <h3 className="text-lg font-bold mb-2">Dispatch</h3>
                 <p>{product.dispatch}</p>
               </div>
@@ -278,7 +278,7 @@ export default function ProductDetailsClient({ product: initialProduct }: Produc
                     </FormItem>
                   )}
                 />
-                <Button type="submit" variant="default" className="flex-1">Add to Wishlist</Button>
+                <Button type="submit" variant="default" className="w-1/2 lg:w-auto">Add to Wishlist</Button>
               </div>
             </form>
           </Form>

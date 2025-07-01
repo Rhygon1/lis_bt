@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { signout } from "@/utils/supabase/auth-actions";
 import { useRouter } from "next/navigation";
 import CartSidebar from "./cartSidebar";
+import { useCart } from "./cartContext";
 
 type propsType = {
   collections?: string[];
@@ -28,12 +29,15 @@ export default function Header(props: propsType) {
   const { user, customData, refetch } = useUser();
   const router = useRouter();
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const {cart} = useCart();
+
+  const totalItemsInCart = cart.length
 
   return (
     <>
       <ScrollingBanner></ScrollingBanner>
-      <header className="flex justify-between items-center p-4 gap-4 h-12">
-        <div className="flex-1">
+      <header className="flex justify-between w-full items-center py-4 px-3 gap-8 h-16 max-w-7xl mx-auto md:justify-between">
+        <div className="flex justify-start items-center gap-4">
           <AppSidebar
             collections={
               props.collections || [
@@ -51,14 +55,14 @@ export default function Header(props: propsType) {
               ]
             }
           ></AppSidebar>
+          <SearchBar></SearchBar>
         </div>
-        <Link href="/" className="flex-1 text-center">
-          <p className="font-[Overpass] font-bold text-nowrap md:text-lg">
+        <Link href="/" className="flex justify-center items-center flex-grow">
+          <p className="font-[Overpass] font-bold text-nowrap text-xl md:text-2xl">
             LIS BOUTIQUE
           </p>
         </Link>
-        <div className="flex flex-1 justify-end gap-2 items-center">
-          <SearchBar></SearchBar>
+        <div className="flex justify-end gap-4 items-center">
           {user ? (
             <Popover>
               <PopoverTrigger asChild>
@@ -107,7 +111,14 @@ export default function Header(props: propsType) {
               <User></User>
             </button>
           )}
-          <CartSidebar />
+          <div className="relative flex items-center">
+            <CartSidebar />
+            {totalItemsInCart > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {totalItemsInCart}
+              </span>
+            )}
+          </div>
         </div>
       </header>
     </>
