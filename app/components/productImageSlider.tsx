@@ -3,8 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-
-const isVideo = (url: string) => url.match(/\.(mp4|webm|ogg)$/i);
+import { useFileTypeDetector } from "./fileDetector";
 
 export const ProductImageSlider = ({ slides }: { slides: string[] }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -41,7 +40,7 @@ export const ProductImageSlider = ({ slides }: { slides: string[] }) => {
         <div className="embla__container h-full">
           {slides.map((slide, index) => (
             <div className="embla__slide h-full relative" key={index}>
-              {isVideo(slide) ? (
+              {useFileTypeDetector(slide) === "video" ? (
                 <video
                   src={slide}
                   controls
@@ -70,7 +69,7 @@ export const ProductImageSlider = ({ slides }: { slides: string[] }) => {
               key={index}
               onClick={() => onThumbClick(index)}
             >
-              {isVideo(slide) ? (
+              {useFileTypeDetector(slide) === "video" ? (
                 <video src={slide} className="w-full h-full object-contain" />
               ) : (
                 <Image
