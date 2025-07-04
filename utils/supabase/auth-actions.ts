@@ -23,19 +23,19 @@ export async function login(formData: FormData) {
 export async function signup(formData: FormData) {
   const supabase = await createClient();
 
-  const firstName = formData.get("first-name") as string;
-  const lastName = formData.get("last-name") as string;
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-    options: {
-      data: {
-        full_name: `${firstName + " " + lastName}`,
-        email: formData.get("email") as string,
-      },
-    },
-  };
-  const { error } = await supabase.auth.signUp(data);
+	const firstName = formData.get("first-name") as string;
+	const lastName = formData.get("last-name") as string;
+	const data = {
+		email: formData.get("email") as string,
+		password: formData.get("password") as string,
+		options: {
+			data: {
+				full_name: `${firstName + " " + lastName}`,
+				email: formData.get("email") as string,
+			},
+		},
+	};
+	const { error } = await supabase.auth.signUp(data);
 
   if (error) {
     console.log("Signup error:", error);
@@ -56,7 +56,7 @@ export async function signout() {
   }
 
   revalidatePath("/", "layout");
-  return { success: true };
+  return { error: null };
 }
 
 export async function signInWithGoogle() {

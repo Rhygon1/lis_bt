@@ -6,9 +6,9 @@ export default function CustomAvatar() {
   const { user } = useUser();
   let initials = user?.email?.slice(0, 2);
 
-  useEffect(() => {
-    initials = user?.email?.slice(0, 2);
-  }, [user]);
+	useEffect(() => {
+		initials = user?.email?.slice(0, 2);
+	}, [user]);
 
   return user?.user_metadata.avatar_url ? (
     <Avatar className="flex justify-center items-center">
