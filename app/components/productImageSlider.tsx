@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import Image from "next/image";
 import { useFileTypeDetector } from "./fileDetector";
 
 export const ProductImageSlider = ({ slides }: { slides: string[] }) => {
@@ -47,11 +46,10 @@ export const ProductImageSlider = ({ slides }: { slides: string[] }) => {
                   className="w-full h-full object-contain"
                 />
               ) : (
-                <Image
+                <img
                   src={slide}
                   alt={`Slide ${index + 1}`}
-                  fill
-                  style={{ objectFit: "contain" }}
+                  className="w-full h-full object-contain"
                 />
               )}
             </div>
@@ -72,17 +70,10 @@ export const ProductImageSlider = ({ slides }: { slides: string[] }) => {
               {useFileTypeDetector(slide) === "video" ? (
                 <video src={slide} className="w-full h-full object-contain" />
               ) : (
-                <Image
+                <img
                   src={slide}
                   alt={`Thumbnail ${index + 1}`}
-                  width={120} // or whatever max thumbnail width you want
-                  height={120} // preserves aspect ratio automatically
-                  style={{
-                    objectFit: "contain",
-                    objectPosition: "center",
-                    width: "auto",
-                    height: "100%",
-                  }}
+                  className="w-auto h-full object-contain object-center"
                 />
               )}
             </div>

@@ -1,6 +1,5 @@
 "use client";
 import { dataProductType as Product } from "@/app/(data)/getProducts";
-import Image from "next/image";
 import {
   Select,
   SelectContent,
@@ -38,12 +37,10 @@ export default function CartItem({ product, size, quantity }: CartItemProps) {
   return (
     <div className="flex items-center gap-4 p-4 border-b">
       <div className="w-24 h-24 relative rounded-md overflow-hidden">
-        <Image
+        <img
           src={product.media[0] as string}
           alt={product.title}
-          fill
-          // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover object-top"
+          className="object-cover object-top w-full h-full"
         />
       </div>
       <div className="flex-1 flex flex-col gap-2">

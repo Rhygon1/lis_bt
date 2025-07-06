@@ -20,12 +20,11 @@ import { Currency } from "./currency";
 import { useUser } from "./auth-context";
 import { useCart } from "./cartContext";
 import Link from "next/link";
-import Image from "next/image";
 
 type propsType = {
   updateProducts: () => Promise<void>;
   product: dataProductType;
-  priority: boolean
+  priority: boolean;
 };
 
 export default function ProductCard(props: propsType) {
@@ -50,14 +49,12 @@ export default function ProductCard(props: propsType) {
               ? "Ready to Ship"
               : "Preorder"}
           </div>
-          <Image
+          <img
             src={props.product.media[0] as string}
             alt={props.product.title}
-            fill
             loading={props.priority ? "eager" : "lazy"}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{ objectFit: "cover", objectPosition: "top" }}
-          ></Image>
+            className="w-full h-full object-cover object-top"
+          />
           <button
             onClick={(e) => {
               e.preventDefault();
