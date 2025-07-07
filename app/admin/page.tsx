@@ -162,11 +162,14 @@ export default function Main() {
       files: imageFiles,
     });
     let imageUrls = imageResponses.map((a) => a.ufsUrl);
-    const videoResponses = await uploadFiles("videoUploader", {
-      files: videoFiles,
-    });
-    let videoUrls = videoResponses.map((a) => a.ufsUrl);
-    let urls = [...imageUrls, ...videoUrls];
+		let urls = [...imageUrls]
+		if (videoFiles.length > 0){
+			const videoResponses = await uploadFiles("videoUploader", {
+				files: videoFiles,
+			});
+			let videoUrls = videoResponses.map((a) => a.ufsUrl);
+			urls = [...imageUrls, ...videoUrls];
+		}
 
     let newProduct = {
       title: values.title,
