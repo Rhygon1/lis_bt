@@ -29,6 +29,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/app/components/cartContext";
 import { updateProduct } from "@/app/(data)/updateProduct";
+import { ShareButton } from "@/components/share-button";
 
 interface ProductDetailsClientProps {
   product: dataProductType;
@@ -155,6 +156,7 @@ export default function ProductDetailsClient({ product: initialProduct }: Produc
                 <Label htmlFor="inStock-switch">Toggle Stock</Label>
               </div>
             )}
+						<ShareButton  description={`${product.title} by LIS Boutique!`} url={`www.lisboutique.com/product/${product.id}`} title={product.title}/>
           </div>
           <p className="text-sm text-blue-500 -mt-2 mb-4">Shipping will be calculated at final order time.</p>
           {updateMessage && (
