@@ -156,7 +156,7 @@ export default function ProductDetailsClient({ product: initialProduct }: Produc
                 <Label htmlFor="inStock-switch">Toggle Stock</Label>
               </div>
             )}
-						<ShareButton  description={`${product.title} by LIS Boutique!`} url={`www.lisboutique.com/product/${product.id}`} title={product.title}/>
+						<ShareButton  description={`${product.title} by LIS Boutique!`} url={`https://www.lisboutique.in/products/${product.id}`} title={product.title}/>
           </div>
           <p className="text-sm text-blue-500 -mt-2 mb-4">Shipping will be calculated at final order time.</p>
           {updateMessage && (
